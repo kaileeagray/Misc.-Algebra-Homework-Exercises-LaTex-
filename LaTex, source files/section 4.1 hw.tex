@@ -1,0 +1,681 @@
+\documentclass[12 pt]{article}
+% Change "article" to "report" to get rid of page number on title page
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{setspace}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{chngpage}
+\usepackage{indentfirst}
+\usepackage{soul,color}
+\usepackage{graphicx,float,wrapfig}
+\usepackage{gauss}
+\usepackage{dcolumn}
+\newcolumntype{2}{D{.}{}{2.0}}
+\usepackage{multicol}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{float}
+\usepackage{wrapfig}
+
+
+
+\graphicspath{ {/home/user/Documents/} }
+
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                  {2.3ex \@plus.2ex}%
+                                  {\normalfont\bfseries}
+                                }
+\makeatother
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\g@matrix
+ {\vbox\bgroup}
+ {\vbox\bgroup\normalbaselines}% restore the standard baselineskip
+ {}{}
+\makeatother
+
+% In case you need to adjust margins:
+\topmargin=-0.75in      %
+\evensidemargin=0in     %
+\oddsidemargin=0in      %
+\textwidth=6.5in        %
+\textheight=9.0in       %
+\headsep=0.25in         %
+
+% Homework Specific Information
+\newcommand{\hmwkTitle}{$\S 4.1$ Fields; Roots of Polynomials}
+\newcommand{\hmwkDueDate}{Friday,\ November\ 20,\ 2015}
+\newcommand{\hmwkClass}{Math\ 620}
+\newcommand{\hmwkClassTime}{10:00}
+\newcommand{\hmwkClassInstructor}{Boynton}
+\newcommand{\hmwkAuthorName}{Kailee\ Gray}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+
+
+
+% Setup the header and footer
+\pagestyle{plain}                                                       %
+\lhead{\hmwkAuthorName}                                                 %
+\chead{\hmwkClass\ (\hmwkClassInstructor\ \hmwkClassTime): \hmwkTitle}  %
+\rhead{\firstxmark}                                                     %
+\lfoot{\lastxmark}                                                      %
+\cfoot{}                                                                %
+\rfoot{Page\ \thepage\ of\ \pageref{LastPage}}                          %
+\renewcommand\headrulewidth{0.4pt}                                      %
+\renewcommand\footrulewidth{0.4pt}                                      %
+
+% This is used to trace down (pin point) problems
+% in latexing a document:
+%\tracingall
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some tools
+\newcommand{\enterProblemHeader}[1]{\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak%
+                                    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak}%
+\newcommand{\exitProblemHeader}[1]{\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak%
+                                   \nobreak\extramarks{#1}{}\nobreak}%
+
+\newlength{\labelLength}
+\newcommand{\labelAnswer}[2]
+  {\settowidth{\labelLength}{#1}%
+   \addtolength{\labelLength}{0in}%
+   \changetext{}{-\labelLength}{}{}{}%
+   \noindent\fbox{\begin{minipage}[c]{\columnwidth}#2\end{minipage}}%
+   \marginpar{\fbox{#1}}%
+
+   % We put the blank space above in order to make sure this
+   % \marginpar gets correctly placed.
+   \changetext{}{+\labelLength}{}{}{}}%
+
+\setcounter{secnumdepth}{0}
+\newcommand{\homeworkProblemName}{}%
+\newcounter{homeworkProblemCounter}%
+\newenvironment{homeworkProblem}[1][\arabic{homeworkProblemCounter}]%
+  {\stepcounter{homeworkProblemCounter}%
+   \renewcommand{\homeworkProblemName}{#1}%
+   \section{\homeworkProblemName}%
+   \noindent 
+   
+   \enterProblemHeader{\homeworkProblemName}}%
+  {\exitProblemHeader{\homeworkProblemName}}%
+
+\newcommand{\problemAnswer}[1]
+  {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+
+\newcommand{\problemLAnswer}[1]
+    {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+
+\newcommand{\homeworkSectionName}{}%
+\newlength{\homeworkSectionLabelLength}{}%
+\newenvironment{homeworkSection}[1]%
+  {% We put this space here to make sure we're not connected to the above.
+   % Otherwise the changetext can do funny things to the other margin
+
+   \renewcommand{\homeworkSectionName}{#1}%
+   \settowidth{\homeworkSectionLabelLength}{\homeworkSectionName}%
+   \addtolength{\homeworkSectionLabelLength}{0 in}%
+   \changetext{}{-\homeworkSectionLabelLength}{}{}{}%
+   \subsection{\homeworkSectionName}%
+   \enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]}}%
+  {\enterProblemHeader{\homeworkProblemName}%
+
+   % We put the blank space above in order to make sure this margin
+   % change doesn't happen too soon (otherwise \sectionAnswer's can
+   % get ugly about their \marginpar placement.
+   \changetext{}{+\homeworkSectionLabelLength}{}{}{}}%
+
+\newcommand{\sectionAnswer}[1]
+  {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+   \enterProblemHeader{\homeworkProblemName}\exitProblemHeader{\homeworkProblemName}%
+  
+ \newcommand{\R}{{\mathbb R}}
+          \newcommand{\nil}{\varnothing}
+          \newcommand{\N}{{\mathbb N}}
+          \newcommand{\Z}{{\mathbb Z}}
+        \newcommand{\MOD}{{ \ (\text{mod} \ }}
+
+ \newcommand{\C}{{\mathbb C}}
+  \newcommand{\Q}{{\mathbb Q}}
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make title
+\title{\vspace{2in}\textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\\normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate}\\\vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}\vspace{3in}}
+\date{}
+\author{\textbf{\hmwkAuthorName}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{spacing}{1.75}
+\maketitle
+
+ 
+% Uncomment the \tableofcontents and   lines to get a Contents page
+% Uncomment the \setcounter line as well if you do NOT want subsections
+%       listed in Contents
+%\setcounter{tocdepth}{1}
+%\tableofcontents
+% 
+
+% When problems are long, it may be desirable to put a   or a
+% \clearpage before each homeworkProblem environment
+4.1: 2,6,9,11,13,17,18
+
+\begin{flushleft}
+
+\begin{homeworkProblem} [Exercise 4.1.2: Let $p$ be a prime number and let $n$ be a positive integer. How many polynomials are there of degree $n$ over $\Z_p$? ]
+\problemAnswer{ 
+Consider some polynomial over $\Z_p$ of degree $n$: $a_nx^n + a_{n-1}x^{n-1}+ \dots + a_1x + a_0$. Then, $a_n, a_{n-1}, \dots, a_1, a_0 \in \Z_p$ so there are $p$ choices for each of the $n+1$ $a_i$'s with the exception of $a_n$.  Since $a_nx^n + a_{n-1}x^{n-1}+ \dots + a_1x + a_0$ has degree $n$, the leading coefficient must be non-zero; thus there are $p-1$ choices for $a_n$. Hence, there are $p^n(p-1)$ possible polynomials of degree $n$ over $\Z_p$.  
+}\end{homeworkProblem}
+\begin{homeworkProblem}[Exercise 4.1.6: Let $p$ be a prime number. Find all roots of $x^{p-1}-1$ in $\Z_p$. ]
+\problemAnswer{
+By corollary 1.4.12 (Fermat), since $p$ is prime, $x^p \equiv x \MOD p)$ for any integer $x$. We are looking for roots in $\Z_p$ so consider $x \MOD p)$. Then, $x \in \Z_p$ and so $\gcd(x,p)=1$ which allows us, as long as $x \neq 0$, to divide both sides of $x^p \equiv x \MOD p)$ by $x$ to obtain $x^{p-1} \equiv 1 \MOD p)$. This is equivalent to $x^{p-1}-1 \equiv 0 \MOD p)$. Thus, any $x \in \Z_p$, except $x=0$, is a root of $x^{p-1}-1$ in $\Z_p$.
+}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 4.1.9: Let $a$ be a nonzero element of a field $F$. Show that $(a^{-1})^{-1}=a$ and $(-a)^{-1}=-a^{-1}$. ]
+\problemAnswer{
+\begin{proof}
+ Let $a$ be a nonzero element of a field $F$. Since $a$ is nonzero, $a^{-1}$ and $(a^{-1})^{-1}$ exist;
+ \begin{eqnarray*}
+ 	(a^{-1})^{-1} & = & (a^{-1})^{-1}  \\
+ 	(a^{-1})^{-1}a^{-1} & = & (a^{-1})^{-1}a^{-1} \\
+ 	1 & = & (a^{-1})^{-1}a^{-1} \\
+	1a & = & (a^{-1})^{-1}a^{-1}a \\
+	a & = & (a^{-1})^{-1}.
+ \end{eqnarray*}
+Since $a$ is nonzero, $-a$ is nonzero and $(-a)^{-1}$ exists such that $(-a)^{-1}(-a)=1$;
+\begin{eqnarray*}
+(-a)^{-1}(-a) & = & 1 \\ 	
+-(-a)^{-1}a & = & 1 \\ 
+-(-a)^{-1}a(-a^{-1}) & = & 1(-a^{-1}) \\ 
+-(-(-a)^{-1}a(a^{-1})) & = & -a^{-1} \\ 
+(-a)^{-1} & = & -a^{-1}
+\end{eqnarray*}
+ \end{proof} }
+\end{homeworkProblem}
+ 
+\begin{homeworkProblem}[Exercise 4.1.11: Show that the set $\Q(\sqrt{3})=\{ a+b\sqrt{3} \ | \ a, b \in \Q \}$ is closed under addition, subtraction, multiplication, and division.]
+\problemAnswer{
+\begin{proof}
+Consider $a+b\sqrt{3}, c + d\sqrt{3} \in \Q(\sqrt{3})$. \\
+\textbf{(addition)} Then, $a+b\sqrt{3}+ c + d\sqrt{3}=a+c + (b+d)\sqrt{3}$. Since addition in $\Q$ is closed, $a + c \in \Q$ and $b + d \in \Q$. Thus, $\Q(\sqrt{3})$ is closed under addition.\\
+\textbf{(subtraction)} Then, $(a+b\sqrt{3}) - (c + d\sqrt{3})=a-c + (b-d)\sqrt{3}=a+(-c) + (b+(-d))\sqrt{3}$. $c, d \in \Q$ implies $-c, -d \in \Q$. Addition in $\Q$ is closed so $a + (-c) \in \Q$ and $b + (-d) \in \Q$. Thus, $\Q(\sqrt{3})$ is closed under subtraction.\\
+\textbf{(multiplication)} Note $(a+b\sqrt{3})(c + d\sqrt{3})=ac + (bc)\sqrt{3}+(ad)\sqrt{3}+(bd)3=ac+3bd + (bc+ad)\sqrt{3}$. Multiplication and addition in $\Q$ is closed so $a,b,c, d \in \Q$ implies $ac+3bd, bc+ad \in \Q$. Therefore, $ac+3bd + (bc+ad)\sqrt{3} \in \Q(\sqrt{3})$. Thus, $\Q(\sqrt{3})$ is closed under multiplication.\\
+\textbf{(division)} Note $c+ d \sqrt{3}\neq 0$ and 
+\[
+\frac{a+b\sqrt{3}}{c + d\sqrt{3}}=\frac{a+b\sqrt{3}}{c + d\sqrt{3}}\cdot \frac{c - d\sqrt{3}}{c - d\sqrt{3}}=\frac{ac-3bd +(bc-ad)\sqrt{3}}{c^2 - 3d^2}=\frac{ac-3bd}{c^2 - 3d^2} +\frac{bc-ad}{c^2 - 3d^2}\sqrt{3}\]
+ Multiplication, addition, and subtraction is closed in $\Q$ and division is closed in $\Q - \{0\}$  so $a,b,c, d \in \Q$ implies $\frac{ac-3bd}{c^2 - 3d^2} \in \Q$ and $\frac{bc-ad}{c^2 - 3d^2} \in \Q$ as long as $c^2-3d^2\neq0$. Suppose $c^2-3d^2  =  0. \text{ Then, }
+	c^2  =  3d^2$ and $c  = \pm \sqrt{3}d. $
+Notice $\sqrt{3}$ is an irrational number so $\sqrt{3}d$ is irrational as long as $d\neq 0$. Since $c=\pm \sqrt{3}d$, if $d=0$, $c=0$, but $c+d\sqrt{3}\neq 0$. Thus, $c^2$ is irrational which implies $c$ is irrational. However, $c+d\sqrt{3} \in \Q(\sqrt{3})$ implies $c,d \in \Q$. Hence, $c^2-3d^2\neq0$. Thus, $\Q(\sqrt{3})$ is closed under division.
+\end{proof}}
+\end{homeworkProblem}
+\newpage
+\begin{homeworkProblem}[]
+\textbf{Exercise 4.1.13: Show Let $F = \left\{ \text{ all matrices of the form } \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix}, \ a, b \in \R \right\}$ is a field under the operations of matrix addition and multiplication. }
+\begin{proof}
+ Consider $\begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix}, \begin{bmatrix}
+   c & d \\
+    -d  & c\\ \end{bmatrix}, \begin{bmatrix}
+   e & f \\
+    -f  & e\\ \end{bmatrix} \in F$ with $a, b, c, d, e, f \in \R.$
+\\ \textbf{(closure, $+$)}
+\[\begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} + \begin{bmatrix}
+   c & d \\
+    -d  & c\\ \end{bmatrix}
+    =\begin{bmatrix}
+   a+c & b+d \\
+    -(b+d)  & a+c\\ \end{bmatrix} \in F \text{ since } a+c, b+d \in \R \]
+\\  \textbf{(closure, $\cdot$)}
+\[\begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} \cdot \begin{bmatrix}
+   c & d \\
+    -d  & c\\ \end{bmatrix}
+    =\begin{bmatrix}
+   ac-bd & ad+bc \\
+    -(ad+bc)  & ac-bd\\ \end{bmatrix} \in F \text{ since } ac-bd, ad+bc \in \R \]
+     \textbf{(associative, $+$)}
+\[\left( \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} + \begin{bmatrix}
+   c & d \\
+    -d  & c\\ \end{bmatrix} \right)
+    + \begin{bmatrix}
+   e & f \\
+    -f  & e\\ \end{bmatrix} =
+    \begin{bmatrix}
+   a+c & b+d \\
+    -(b+d)  & a+c\\ \end{bmatrix} 
+    + \begin{bmatrix}
+   e & f \\
+    -f  & e\\ \end{bmatrix} = 
+    \begin{bmatrix}
+   (a+c)+e & (b+d)+f \\
+    -(b+d)-f  & (a+c)+e\\ \end{bmatrix} 
+    \]
+    \[
+     =\begin{bmatrix}
+   a+(c+e) & b+(d+f) \\
+    -b-(d+f)  & a+(c+e)\\ \end{bmatrix} =
+    \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} +
+\begin{bmatrix}
+   c+e & d+f \\
+    -(d+f) & c+e\\ \end{bmatrix}=
+    \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} + \left(
+\begin{bmatrix}
+   c & d \\
+    -d  & c\\ \end{bmatrix}
+    + \begin{bmatrix}
+   e & f \\
+    -f  & e\\ \end{bmatrix}
+\right)
+    \]
+      \textbf{(associative, $\cdot$)}
+      \[\left( \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} \cdot \begin{bmatrix}
+   c & d \\
+    -d  & c\\ \end{bmatrix} \right)
+    \cdot \begin{bmatrix}
+   e & f \\
+    -f  & e\\ \end{bmatrix} =
+    \begin{bmatrix}
+   ac-bd & ad+bc \\
+    -(ad+bc)  & ac-bd\\ \end{bmatrix} 
+    \cdot \begin{bmatrix}
+   e & f \\
+    -f  & e\\ \end{bmatrix} = \]
+    \[
+    \begin{bmatrix}
+   e(ac-bd)-f(ad+bc) & e(ad+bc)+f(ac-bd) \\
+    -e(ad+bc)-f(ac-bd)  & e(ac-bd)-f(ad+bc)\\ \end{bmatrix} =
+    \]
+    \[
+        \begin{bmatrix}
+   eac-ebd-fad-fbc & ead+ebc+fac-fbd \\
+    -ead-ebc-fac+fbd  & eac-ebd-fad-fbc\\ \end{bmatrix}=
+    \]
+    \[
+    \begin{bmatrix}
+  a (ec-fd)-b(ed+fc) & a(ed+fc)+b(ec-fd) \\
+    -a(ed+fc)-b(ec-fd)  & a(ec-fd)-b(ed+fc)\\ \end{bmatrix}=\begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} \cdot
+     \begin{bmatrix}
+   ec-fd & ed+fc \\
+    -(ed+fc)  & ec-fd\\ \end{bmatrix} =\]
+    \[
+    \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} \cdot \left(
+\begin{bmatrix}
+   c & d \\
+    -d  & c\\ \end{bmatrix}
+    \cdot \begin{bmatrix}
+   e & f \\
+    -f  & e\\ \end{bmatrix}
+\right)
+    \]
+  \textbf{(commutative, $+$)}
+\[\begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} + \begin{bmatrix}
+   c & d \\
+    -d  & c\\ \end{bmatrix}
+    =\begin{bmatrix}
+   a+c & b+d \\
+    -(b+d)  & a+c\\ \end{bmatrix} =\begin{bmatrix}
+   c+a & d+b \\
+    -(d+b)  & c+a\\ \end{bmatrix}= \begin{bmatrix}
+   c & d \\
+    -d  & c\\ \end{bmatrix}+\begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} \]  
+  \textbf{(commutative, $\cdot$)}
+  \[\begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} \cdot \begin{bmatrix}
+   c & d \\
+    -d  & c\\ \end{bmatrix}
+    =\begin{bmatrix}
+   ac-bd & ad+bc \\
+    -(ad+bc)  & ac-bd\\ \end{bmatrix}=\begin{bmatrix}
+   ca-db & cb+da \\
+    -(da+cb)  & -bd+ca\\ \end{bmatrix}=\begin{bmatrix}
+   c & d \\
+    -d  & c\\ \end{bmatrix} \cdot
+    \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} 
+    \]
+  \textbf{(distributive from the right)}
+  \[
+  \left( \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} + \begin{bmatrix}
+   c & d \\
+    -d  & c\\ \end{bmatrix} \right)
+    \cdot \begin{bmatrix}
+   e & f \\
+    -f  & e\\ \end{bmatrix} =
+    \begin{bmatrix}
+   a+c & b+d \\
+    -(b+d)  & a+c\\ \end{bmatrix} 
+    \cdot \begin{bmatrix}
+   e & f \\
+    -f  & e\\ \end{bmatrix} =
+  \]
+  \[
+    \begin{bmatrix}
+   ae+ce-fb-fd & af+cf+be+de \\
+    -be-de-af-cf  &  -bf-df+ae+ce \\ \end{bmatrix} =
+    \begin{bmatrix}
+   ae-bf & af+be \\
+    -be-af  &  -bf+ae \\ \end{bmatrix}+
+    \begin{bmatrix}
+   ce-df & cf+de \\
+    -de-cf  &  -df+ce \\ \end{bmatrix}=
+  \]
+  \[
+   \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} \cdot \begin{bmatrix}
+   e & f \\
+    -f  & e\\ \end{bmatrix} + \begin{bmatrix}
+   c & d \\
+    -d  & c\\ \end{bmatrix} 
+    \cdot \begin{bmatrix}
+   e & f \\
+    -f  & e\\ \end{bmatrix}
+  \]
+    \textbf{(distributive from the left)}
+    \[
+ \begin{bmatrix}
+   e & f \\
+    -f  & e\\ \end{bmatrix} \cdot \left( \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} + \begin{bmatrix}
+   c & d \\
+    -d  & c\\ \end{bmatrix} \right)
+    =
+   \begin{bmatrix}
+   e & f \\
+    -f  & e\\ \end{bmatrix}
+    \cdot  \begin{bmatrix}
+   a+c & b+d \\
+    -(b+d)  & a+c\\ \end{bmatrix} 
+ =
+  \]
+  \[
+    \begin{bmatrix}
+   ea+ec-fb-fd & eb+ed+fa+fc \\
+    -fa-fc-eb-ed  &  -fb-fd+ea+ec \\ \end{bmatrix} =
+    \begin{bmatrix}
+   ea-fb & eb+fa \\
+    -fa-eb  &  -fb+ea \\ \end{bmatrix}+
+    \begin{bmatrix}
+   ec-fd & ed+fc \\
+    -fc-ed  &  -fd+ec \\ \end{bmatrix}=
+  \]
+  \[
+   \begin{bmatrix}
+   e & f \\
+    -f  & e\\ \end{bmatrix}
+    \cdot 
+    \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} + \begin{bmatrix}
+   e & f \\
+    -f  & e\\
+    \end{bmatrix}
+    \cdot \begin{bmatrix}
+   c & d \\
+    -d  & c\\ \end{bmatrix} 
+    \]
+    \textbf{(identity, $+$)} For any element in $F$,
+    \[
+     \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} + \begin{bmatrix}
+   0 & 0 \\
+    0  & 0\\
+    \end{bmatrix}=\begin{bmatrix}
+   a+0 & b+0\\
+    -b+0  & a+0\\
+\end{bmatrix}=
+\begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} =\begin{bmatrix}
+   0 & 0 \\
+    0  & 0\\
+\end{bmatrix}
++
+\begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix}
+    \]  
+    
+   \textbf{(identity, $\cdot$)} For any element in $F$,
+    \[
+     \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} \cdot \begin{bmatrix}
+   1 & 0 \\
+    0  & 1\\
+    \end{bmatrix}=\begin{bmatrix}
+   a & b\\
+    -b  & a\\
+\end{bmatrix}. \text{ and }
+\begin{bmatrix}
+   1 & 0 \\
+    0  & 1\\
+    \end{bmatrix}
+    \cdot 
+    \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} =\begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix}
+    \]  
+   \textbf{(inverse, $+$)} Notice $-1 \cdot \begin{bmatrix}
+    a & b \\
+    -b  & a\\
+    \end{bmatrix} = -\begin{bmatrix}
+    -a & -b \\
+    b  & -a\\
+    \end{bmatrix}$. Then, 
+      \[
+     \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} + -1 \cdot \begin{bmatrix}
+    a & b \\
+    -b  & a\\
+    \end{bmatrix}=\begin{bmatrix}
+   0 & 0\\
+     0 & 0\\
+\end{bmatrix}. \text{ and }
+-1 \cdot \begin{bmatrix}
+    a & b \\
+    -b  & a\\
+    \end{bmatrix}
+    +
+    \begin{bmatrix}
+   a & b \\
+    -b  & a\\
+\end{bmatrix} =\begin{bmatrix}
+   0 & 0 \\
+   0  & 0\\
+\end{bmatrix}
+    \]  
+   \textbf{(inverse, $\cdot$)} We will show for any $A \in F$, $A \neq \begin{bmatrix}
+   0 & 0 \\
+   0  & 0\\
+\end{bmatrix}$, $A^{-1}=\frac{1}{a^2+b^2} \cdot \begin{bmatrix}
+    a & -b \\
+    b  & a\\
+    \end{bmatrix}$. Note $b,a$ are not both $0$, so $a^2 + b^2 \neq 0$. Thus, $A^{-1} \in F$ and: 
+    \[
+    \frac{1}{a^2+b^2} \begin{bmatrix}
+    a & b \\
+    -b  & a\\
+    \end{bmatrix}\cdot \begin{bmatrix}
+    a & -b \\
+    b  & a\\
+    \end{bmatrix}=
+    \frac{1}{a^2+b^2} \begin{bmatrix}
+    a^2+b^2 & -ab+ba \\
+    -ba+ab  & b^2+a^2\\
+    \end{bmatrix}
+    =
+    \frac{1}{a^2+b^2} \begin{bmatrix}
+    a^2+b^2 & 0 \\
+    0  & a^2+b^2\\
+    \end{bmatrix}=
+    \begin{bmatrix}
+    1 & 0 \\
+    0  & 1\\
+    \end{bmatrix}
+    \]
+ Since $(F, \cdot)$ is commutative, 
+ \[
+    \begin{bmatrix}
+    a & -b \\
+    b  & a\\
+    \end{bmatrix}\cdot
+    \frac{1}{a^2+b^2} \begin{bmatrix}
+    a & b \\
+    -b  & a\\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+    1 & 0 \\
+    0  & 1\\
+    \end{bmatrix}
+    \]
+Thus, $(F, +, \cdot)$ is a field. 
+ \end{proof}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[]
+\textbf{Exercise 4.1.17:  Let $(x_0, y_0), (x_1, y_1), (x_2, y_2)$ be points in the Euclidean plane $\R^2$ such that $x_0, x_1, x_2$ are distinct. Show that
+\[
+f(x) =  \frac{y_0(x-x_1)(x-x_2)}{(x_0-x_1)(x_0-x_2)}+ \frac{y_1(x-x_0)(x-x_2)}{(x_1-x_0)(x_1-x_2)}+ \frac{y_2(x-x_0)(x-x_1)}{(x_2-x_0)(x_2-x_1)}
+\]
+defines a polynomial $f(x)$ such that $f(x_0)=y_0$, $f(x_1)=y_1$, and $f(x_2)=y_2$.
+}
+\begin{proof}
+Because multiplication and addition are closed in $\R$ and because $x_0, x_1, x_2$ are distinct and division is closed in $\R - \{0\}$, we can see that the expansion of $f(x)$ will yield a degree 2 polynomial with coefficients in $\R$. Next, compute $f(x_0), f(x_1)$, and $f(x_2)$:
+\[
+f(x_0) =  \frac{y_0(x_0-x_1)(x_0-x_2)}{(x_0-x_1)(x_0-x_2)}+ \frac{y_1(x_0-x_0)(x_0-x_2)}{(x_1-x_0)(x_1-x_2)}+ \frac{y_2(x_0-x_0)(x_0-x_1)}{(x_2-x_0)(x_2-x_1)}=\frac{y_0(x_0-x_1)(x_0-x_2)}{(x_0-x_1)(x_0-x_2)}=y_0
+\]
+\[
+f(x_1) =  \frac{y_0(x_1-x_1)(x_1-x_2)}{(x_0-x_1)(x_0-x_2)}+ \frac{y_1(x_1-x_0)(x_1-x_2)}{(x_1-x_0)(x_1-x_2)}+ \frac{y_2(x_1-x_0)(x_1-x_1)}{(x_2-x_0)(x_2-x_1)}= \frac{y_1(x_1-x_0)(x_1-x_2)}{(x_1-x_0)(x_1-x_2)} =y_1
+\]
+\[
+f(x_2) =  \frac{y_0(x_2-x_1)(x_2-x_2)}{(x_0-x_1)(x_0-x_2)}+ \frac{y_1(x_2-x_0)(x_2-x_2)}{(x_1-x_0)(x_1-x_2)}+ \frac{y_2(x_2-x_0)(x_2-x_1)}{(x_2-x_0)(x_2-x_1)}= \frac{y_2(x_2-x_0)(x_2-x_1)}{(x_2-x_0)(x_2-x_1)} =y_2.
+\]
+Thus, $f(x)$ satisfies the given conditions.
+\end{proof}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 4.1.18: Use Lagrange's interpolation formula to find a polynomial $f(x)$ such that $f(1)=0$, $f(2)=1$, and $f(3)=4$.]
+\problemAnswer{ Then, $x_0=1, y_0=0, x_1=2, y_1=1, x_2=3, y_2=4$, so applying Lagrange's interpolation formula, we have
+\[
+f(x) = \frac{0(x-2)(x-3)}{(1-2)(1-3)}+\frac{1(x-1)(x-3)}{(2-1)(2-3)}+\frac{4(x-1)(x-2)}{(3-1)(3-2)}=-(x-1)(x-3)+2(x-2)(x-2)
+\]
+\[
+=(x-1)(-x+3+2x-4)=(x-1)(x-1)=x^2-2x+1.
+\]
+By inspection, we can see that $f(x)=x^2-2x+1$ satisfies the given conditions.
+}
+\end{homeworkProblem}
+
+\end{flushleft}
+\end{spacing}
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------%
+% The following is copyright and licensing information for
+% redistribution of this LaTeX source code; it also includes a liability
+% statement. If this source code is not being redistributed to others,
+% it may be omitted. It has no effect on the function of the above code.
+%----------------------------------------------------------------------%
+% Copyright (c) 2007, 2008, 2009, 2010, 2011 by Theodore P. Pavlic
+%
+% Unless otherwise expressly stated, this work is licensed under the
+% Creative Commons Attribution-Noncommercial 3.0 United States License. To
+% view a copy of this license, visit
+% http://creativecommons.org/licenses/by-nc/3.0/us/ or send a letter to
+% Creative Commons, 171 Second Street, Suite 300, San Francisco,
+% California, 94105, USA.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+% OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+% CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+% TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+% SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+%----------------------------------------------------------------------%

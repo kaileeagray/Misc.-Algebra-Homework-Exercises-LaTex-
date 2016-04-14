@@ -1,0 +1,394 @@
+\documentclass[12 pt]{article}
+% Change "article" to "report" to get rid of page number on title page
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{setspace}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{chngpage}
+\usepackage{indentfirst}
+\usepackage{soul,color}
+\usepackage{graphicx,float,wrapfig}
+\usepackage{gauss}
+\usepackage{dcolumn}
+\newcolumntype{2}{D{.}{}{2.0}}
+\usepackage{multicol}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{enumerate}
+\usepackage{mathtools}
+
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                  {2.3ex \@plus.2ex}%
+                                  {\normalfont\bfseries}
+                                }
+\makeatother
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\g@matrix
+ {\vbox\bgroup}
+ {\vbox\bgroup\normalbaselines}% restore the standard baselineskip
+ {}{}
+\makeatother
+
+% In case you need to adjust margins:
+\topmargin=-0.45in      %
+\evensidemargin=0in     %
+\oddsidemargin=0in      %
+\textwidth=6.5in        %
+\textheight=9.0in       %
+\headsep=0.25in         %
+
+% Homework Specific Information
+\newcommand{\hmwkTitle}{Homework 3,\ Functions}
+\newcommand{\hmwkDueDate}{Wednesday,\ September\ 16,\ 2015}
+\newcommand{\hmwkClass}{Math\ 620}
+\newcommand{\hmwkClassTime}{10:00}
+\newcommand{\hmwkClassInstructor}{Boynton}
+\newcommand{\hmwkAuthorName}{Kailee\ Gray}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+
+
+
+% Setup the header and footer
+\pagestyle{plain}                                                       %
+\lhead{\hmwkAuthorName}                                                 %
+\chead{\hmwkClass\ (\hmwkClassInstructor\ \hmwkClassTime): \hmwkTitle}  %
+\rhead{\firstxmark}                                                     %
+\lfoot{\lastxmark}                                                      %
+\cfoot{}                                                                %
+\rfoot{Page\ \thepage\ of\ \pageref{LastPage}}                          %
+\renewcommand\headrulewidth{0.4pt}                                      %
+\renewcommand\footrulewidth{0.4pt}                                      %
+
+% This is used to trace down (pin point) problems
+% in latexing a document:
+%\tracingall
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some tools
+\newcommand{\enterProblemHeader}[1]{\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak%
+                                    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak}%
+\newcommand{\exitProblemHeader}[1]{\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak%
+                                   \nobreak\extramarks{#1}{}\nobreak}%
+
+\newlength{\labelLength}
+\newcommand{\labelAnswer}[2]
+  {\settowidth{\labelLength}{#1}%
+   \addtolength{\labelLength}{0in}%
+   \changetext{}{-\labelLength}{}{}{}%
+   \noindent\fbox{\begin{minipage}[c]{\columnwidth}#2\end{minipage}}%
+   \marginpar{\fbox{#1}}%
+
+   % We put the blank space above in order to make sure this
+   % \marginpar gets correctly placed.
+   \changetext{}{+\labelLength}{}{}{}}%
+
+\setcounter{secnumdepth}{0}
+\newcommand{\homeworkProblemName}{}%
+\newcounter{homeworkProblemCounter}%
+\newenvironment{homeworkProblem}[1][\arabic{homeworkProblemCounter}]%
+  {\stepcounter{homeworkProblemCounter}%
+   \renewcommand{\homeworkProblemName}{#1}%
+   \section{\homeworkProblemName}%
+   \noindent 
+   
+   \enterProblemHeader{\homeworkProblemName}}%
+  {\exitProblemHeader{\homeworkProblemName}}%
+
+\newcommand{\problemAnswer}[1]
+  {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+
+\newcommand{\problemLAnswer}[1]
+    {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+
+\newcommand{\homeworkSectionName}{}%
+\newlength{\homeworkSectionLabelLength}{}%
+\newenvironment{homeworkSection}[1]%
+  {% We put this space here to make sure we're not connected to the above.
+   % Otherwise the changetext can do funny things to the other margin
+
+   \renewcommand{\homeworkSectionName}{#1}%
+   \settowidth{\homeworkSectionLabelLength}{\homeworkSectionName}%
+   \addtolength{\homeworkSectionLabelLength}{0 in}%
+   \changetext{}{-\homeworkSectionLabelLength}{}{}{}%
+   \subsection{\homeworkSectionName}%
+   \enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]}}%
+  {\enterProblemHeader{\homeworkProblemName}%
+
+   % We put the blank space above in order to make sure this margin
+   % change doesn't happen too soon (otherwise \sectionAnswer's can
+   % get ugly about their \marginpar placement.
+   \changetext{}{+\homeworkSectionLabelLength}{}{}{}}%
+
+\newcommand{\sectionAnswer}[1]
+  {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+   \enterProblemHeader{\homeworkProblemName}\exitProblemHeader{\homeworkProblemName}%
+  
+ \newcommand{\R}{{\mathbb R}}
+          \newcommand{\nil}{\varnothing}
+          \newcommand{\N}{{\mathbb N}}
+          \newcommand{\Z}{{\mathbb Z}}
+        \newcommand{\MOD}{{ \ (\text{mod} \ }}
+
+ \newcommand{\C}{{\mathbb C}}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make title
+\title{\vspace{2in}\textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\\normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate}\\\vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}\vspace{3in}}
+\date{}
+\author{\textbf{\hmwkAuthorName}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{spacing}{1.5}
+\maketitle
+\newpage
+% Uncomment the \tableofcontents and \newpage lines to get a Contents page
+% Uncomment the \setcounter line as well if you do NOT want subsections
+%       listed in Contents
+%\setcounter{tocdepth}{1}
+%\tableofcontents
+%\newpage
+
+% When problems are long, it may be desirable to put a \newpage or a
+% \clearpage before each homeworkProblem environment
+
+\clearpage
+
+\begin{homeworkProblem}[Exercise 2.1.1: Determine whether the given function is one-to-one and whether it is onto.]
+\noindent \textbf{(a) $f: \R \rightarrow \R; f(x)=x+3$\\} 
+\\
+\problemAnswer{
+\textbf{(1-1)} This function is one-to-one: If $f(x_1)=f(x_2)$, then $x_1+3=x_2+3$ implies $x_1=x_2$.
+\\
+\textbf{(onto)} This function is onto: for any $y \in \R$, $y-3 \in \R$ will map to $y$; $f(y-3)=y-3+3=y$.\\
+}
+\\
+\\
+\noindent \textbf{(b) $f: \C \rightarrow \C; f(x)=x^2+2x+1$\\} \\
+\problemAnswer{
+\textbf{(1-1)} This function is not one-to-one: notice $f(0)=1=f(-2)$, but $0 \neq -2$.
+\\
+\textbf{(onto)} This function is onto: for any $y \in \C$, $ \sqrt{y} \in \C$ so $-1 \pm \sqrt{y}  \in \C$ will map to $y$; $f\left( -1 \pm \sqrt{y}\right)=\left( -1 \pm \sqrt{y}\right)^2 + 2\left( -1 \pm \sqrt{y}\right)+1=1 \pm 2\sqrt{y}+y-2 \pm 2 \sqrt{y}+1=y$.\\
+}
+\\
+\\
+\noindent \textbf{(c) $f: \Z_n \rightarrow \Z_n; f([x]_n)=[mx+b]_n$ where $m, b \in \Z$\\} \\
+\problemAnswer{
+\textbf{(1-1)} This function is not one-to-one: Let $n=8, m=4, b=1$. Then, $f([0]_8)=[4\cdot 0 + 1]=1=[4\cdot 2 + 1]=f([2]_8$ but $[0]_8 \neq [2]_8$.\\
+However, note if $\gcd(m,n)=1$, then $f$ is 1-1. if $f([x_1]_n)=1=f([x_2]_n)$, then $[mx_1+b]_n=[mx_2+b]_n$ so $mx_1+b \equiv mx_2 + b \MOD n)$ which, since $\gcd(m,n)=1$, implies $x_1 \equiv x_2 \MOD n)$.
+\\
+\textbf{(onto)} This function is not onto: using $n=8, m=4, b=1$, there is no element in $\Z_8$ that maps to $2$. If there were, there would be a solution to $4x + 1 \equiv 2 \MOD 8)$ which would imply $4x \equiv 7 \MOD 8)$. If $x$ is even, $4x \equiv 0 \MOD 8)$ and if $x$ is odd, $4x \equiv 4 \MOD 8)$ so no such $x$ exists in $\Z_8$.
+
+However, as above, if $\gcd(m,n)=1$, then $m$ has a unique multiplicative inverse, $m^{-1}$, mod $n$ and so $f$ is onto: for any $y\in \Z_8$, $m^{-1}(y-b)$ maps to $y$.\\
+}
+\\
+\\
+continued on page 3...
+
+\newpage
+\noindent \textbf{2.1.1}
+\noindent \textbf{(d) $f: \R^+ \rightarrow \R; f(x)=$}ln\textbf{$(x)$}\\  \\
+\problemAnswer{
+\textbf{(1-1)} This function is one-to-one: If $f(x_1)=f(x_2)$, then $\ln x_1=\ln x_2+3$, so $e^{\ln x_1}=e^{\ln x_2}$, which implies $x_1=x_2$.
+\\
+\textbf{(onto)} This function is onto: for any $y \in \R$, $e^y \in \R^+$ and $f(e^y)=\ln (e^y) = y$.\\
+}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 2.1.3: For each one-to-one and onto function in exercise 2, find the inverse of the function.]
+\noindent \textbf{(a) $f: \R \rightarrow \R; f(x)=x+3$} \qquad \qquad \qquad \qquad\problemAnswer{$f^{-1}(x)=x-3$}
+\textbf{(b)} $f: \C \rightarrow \C; f(x)=x^2+2x+1$ \qquad \qquad \qquad \qquad \problemAnswer{$f^{-1}(x)=-1 \pm \sqrt{x}$}
+\\
+\noindent \textbf{(c) $f: \Z_n \rightarrow \Z_n; f([x]_n)=[mx+b]_n$ where} $m, b \in \Z$ \\
+\problemAnswer{
+\vspace{.3 cm}
+If $\gcd(m,n)=1$, the multiplicative inverse of $m$ exists mod $n$. So let $m^{-1}$ be the multiplicative inverse of $m$. Then, $f^{-1}([x]_n)=[m^{-1}\cdot (x-b)]_n$.}\\
+\\
+\noindent \textbf{(d) $f: \R^+ \rightarrow \R; f(x)=$}ln\textbf{$(x)$} \qquad \qquad \qquad \qquad
+\problemAnswer{$f^{-1}(x)=e^x$}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 2.1.9: Show that the following formula yields a well-defined function.]
+\noindent \textbf{(a) $f: \Z_8 \rightarrow \Z_8; f([x]_8)=[mx]_8$, for any $m \in \Z$} 
+\\
+\problemAnswer{
+\vspace{.3 cm}
+\textbf{(WD1)} For every $\lbrack x \rbrack_{8} \in \Z_{8}$ we have $ \lbrack x\rbrack_8 \in  \Z_8$ so this condition is satisfied.
+\\
+\textbf{(WD2)} Assume $\lbrack x_1 \rbrack_{8}=\lbrack x_2 \rbrack_{8}$. Then, $x_1 \equiv x_2 \MOD 8)$. Multiply both sides of this congruence by $m$ to obtain $mx_1 \equiv mx_2 \MOD 8)$. This implies $f(\lbrack x_1 \rbrack_{8})=f(\lbrack x_2 \rbrack_{8})$.
+\\
+}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 2.1.10: Give an example to show that the formula does not define a function.]
+\noindent \textbf{(d) $p: \Z_{12} \rightarrow \Z_5;\  p([x]_{12})=[2x]_5$} 
+\\
+\problemAnswer{
+\vspace{.3 cm}
+Notice $[0]_{12}=[12]_{12}$ but $f([0]_{12})=[0]_5$ and $f([12]_{12})=[4]_5$. Since $f([0]_{12})\neq f([12]_{12})$, we have the same input mapping to two different outputs, so $f$ is not a function. 
+}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 2.1.11: Let $k$ and $n$ be positive integers. For a fixed $m \in \Z$ define $f: \Z_n \rightarrow \Z_k$ by $f(\lbrack x \rbrack_n)=(\lbrack mx\rbrack_k)$ for $x  \in \Z$. Show that $f$ defines a function if and only if $k \ | \ mn$.]
+ \problemLAnswer{
+\begin{proof}
+	$(\Rightarrow)$ \hskip0.5 cm  Assume $f$ is a function. Then, $[0]_n$, which is equivalent to $[n]_n$, must map to exactly one element in $\Z_k$. Thus $f([0]_n)=f([n]_n)$ and so $[m\cdot 0]_k=[m\cdot n]_k$. Thus $0 \equiv mn \MOD k)$ which implies $k \ | \ mn$.
+\\
+$(\Leftarrow)$ \hskip0.25 cm Next, suppose $k \ | \ mn$. \\
+\textbf{(WD1)} For every $\lbrack x \rbrack_{n} \in \Z_{n}$ we have $\lbrack mx\rbrack_k \in  \Z_k$ so this condition is satisfied.
+\\
+\textbf{(WD2)} 
+We must show that when $[x_1]_n=[x_2]_n$, $f([x_1]_n)=f([x_2]_n)$. Let $x_1, x_2 \in \Z_n$ such that $[x_1]_n=[x_2]_n$. Then $x_1 \equiv x_2 \MOD n)$ and so $x_1=x_2+bn$ for some $b \in \Z$. Multiply both sides of $x_1=x_2+bn$ by $m$ to obtain $mx_1=mx_2+mbn$. Equivalently, $mx_1=mx_2+b(mn)$. Notice if $k \ | \ mn$, $mn = ka$ for some $a \in \Z$. So we can substitute $mn = ka$ into $mx_1=mx_2+b(mn)$ to obtain $mx_1=mx_2+b(ka)$. Thus, $mx_1 \equiv mx_2 \MOD k)$ and $f([x_1]_n)=f([x_2]_n)$.
+\end{proof}
+}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 2.1.12: Let $k$ and $n$ be positive integers such that $k \ | \ mn$. Show that $f$ defined by: $m \in \Z$, $f: \Z_n \rightarrow \Z_k$, and $f(\lbrack x \rbrack_n)=(\lbrack mx\rbrack_k)$ is a one-to-one correspondence if and only if $k=n$ and $\gcd(m,n)=1$.]
+ \problemLAnswer{
+\begin{proof}
+	$(\Rightarrow)$ \hskip0.5 cm  Assume $f$ defined by $m \in \Z$, $f: \Z_n \rightarrow \Z_k$, and $f(\lbrack x \rbrack_n)=(\lbrack mx\rbrack_k)$ is a one-to-one correspondence. Then, $f$ is one-to-one and onto. \\
+	\\
+	If $f$ is one-to-one, the Pigeon-hole Principle as presented in Boyton implies $n<k$ or $n=k$. If $n<k$, $|\Z_n|<|\Z_k|$. Since $f$ is one-to-one, there exist a maximum of $n$ elements mapped to in $|\Z_k|$ by $f$. So there would exist some $b \in \Z_k$ such that there was no $x \in \Z_n$ with $f([x]_n)=[b]_k$. However, $f$ is onto so such a $b \in \Z_n$ is a contradiction. Thus, $k=n$. 
+	\\
+	\\
+	Because $f$ is onto, there exists $x \in \Z_n$ such that $f([x]_n)=[1]_k$; $f([x]_n)=[mx]_k$, so there must exist $x \in \Z_n$ such that $mx \equiv 1 \MOD k)$. Then, $mx = 1 + bk$ for some $b \in \Z$. Equivalently, $1 = mx + (-b)k$. We showed above that $k=n$, so we can substitute to obtain $1 = mx + (-b)n$. Since we can write $1$ as a linear combination of $m, n$, $\gcd (m,n)=1$. 
+\\
+\\
+\\
+$(\Leftarrow)$ \hskip0.25 cm Assume $k=n$ and $\gcd(m,n)=1$. We will show $f$ is one-to-one and then use theorem 14 in Boynton to show $f$ is a one-to-one correspondence. Suppose $x_1, x_2 \in \Z_n$ such that $f([x_1]_n)=f([x_2]_n)$. Since $f([x_1]_n)=[mx_1]_k$ and $f([x_2]_n)=[mx_2]_k$, we have $mx_1 \equiv mx_2 \MOD k)$. Since $k=n$, the previous equivalence can be written $mx_1 \equiv mx_2 \MOD n)$. \\
+\\
+If $\gcd(m,n)=1$, $m$ has a multiplicative inverse mod $n$, so multiplying both sides of $mx_1 \equiv mx_2 \MOD n)$ by this multiplicative inverse gives us $x_1 \equiv x_2 \MOD n)$. Thus $f([x_1]_n)=f([x_2]_n)$ implies $[x_1]_n=[x_2]_n$; so $f$ is one-to-one.If $k=n$, $\Z_k=\Z_n$ and $|\Z_k|=|\Z_n|$. Thus, because $f$ has domain and co-domain with the same cardinality and because $f$ is one-to-one, theorem 14 in Boynton implies $f$ is a one-to-one correspondence.
+
+\end{proof}
+}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 2.1.14: Let $f: A \rightarrow B$ and $g: B \rightarrow C$ be one-to-one and onto. Show that $(g \circ f)^{-1}$ exists and $(g \circ f)^{-1}=f^{-1} \circ g^{-1}$. ]
+ \problemLAnswer{
+\begin{proof}
+Let $f: A \rightarrow B$ and $g: B \rightarrow C$ be one-to-one and onto.\\
+	First we will show that $(g \circ f)^{-1}$ exists. By proposition 2.1.5 (Beachy), if $g, f$ are one-to-one and onto, $g \circ f$ is one-to-one and onto. So, by proposition 2.1.7 (Beachy), $(g \circ f)^{-1}$ exists and is unique. Next, we will prove $(g \circ f)^{-1}=f^{-1} \circ g^{-1}$. By definition 2.1.6 (Beachy), if $(g \circ f)^{-1}$ is the inverse of $g \circ f$, $(g \circ f)\circ (g \circ f)^{-1} =1_C$ and $(g \circ f)^{-1} \circ (g \circ f)=1_A$. So, we will evaluate $(g \circ f)\circ (f^{-1} \circ g^{-1})$ and $(f^{-1} \circ g^{-1}) \circ (g \circ f)$: 
+\begin{equation*}
+ \begin{multlined}
+(g \circ f)\circ (f^{-1} \circ g^{-1}) = g \circ (f\circ f^{-1}) \circ g^{-1} \qquad \text{by associative property of } \circ\\
+= g \circ (1_B) \circ g^{-1} \qquad \text{by definition 2.1.6 (Beachy) } \\
+= g \circ (1_B \circ g^{-1}) \qquad \text{by associative property of } \circ\\
+= g \circ g^{-1} \qquad \text{by definition 2.1.6 (Beachy) } \\
+= 1_C \qquad \text{by definition 2.1.6 (Beachy.)}\\
+\end{multlined}
+\end{equation*}
+\begin{equation*}
+ \begin{multlined}
+(f^{-1} \circ g^{-1})\circ (g \circ f) = f^{-1} \circ (g^{-1}\circ g) \circ f \qquad \text{by associative property of } \circ\\
+= f^{-1} \circ (1_B) \circ f \qquad \text{by definition 2.1.6 (Beachy) } \\
+= f^{-1} \circ (1_B \circ f)  \qquad \text{by associative property of } \circ\\
+= f^{-1} \circ f \qquad \text{by definition 2.1.6 (Beachy) } \\
+= 1_A \qquad \text{by definition 2.1.6 (Beachy.)} \qquad \qquad \qquad \qquad 
+\end{multlined}
+\end{equation*}
+Thus $f^{-1} \circ g^{-1}$ is an inverse of $g \circ f$. Additionally, $(g \circ f)^{-1}$ is unique so $(g \circ f)^{-1}=f^{-1} \circ g^{-1}$.
+\end{proof}
+}
+\end{homeworkProblem}
+
+
+\begin{homeworkProblem}[Exercise 2.1.15, part 1: Let $f: A \rightarrow B$ and $g: B \rightarrow C$ be functions. Prove that if $g \circ f$ is one-to-one, then $f$ is one-to-one ]
+ \problemLAnswer{
+\begin{proof}
+Assume $g \circ f$ is one-to-one. Let $x_1, x_2 \in A$ such that $f(x_1)=f(x_2)$. Then, since $g$ is a function, $g(f(x_1))=g(f(x_2))$ and so $(g\circ f) (x_1)=(g\circ f)(x_2)$. Since $g \circ f$ is one-to-one, $(g\circ f) (x_1)=(g\circ f)(x_2)$ implies $x_1=x_2$. Thus, $f$ is one-to-one.
+\end{proof}
+}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 2.1.15, part 2: Let $f: A \rightarrow B$ and $g: B \rightarrow C$ be functions. Prove that if  $g \circ f$ is onto, then $g$ is onto. ]
+ \problemLAnswer{
+\begin{proof}
+If $g \circ f$ is onto for any $c \in C$, there exists $a \in A$ such that $(g \circ f)(a)=c$. This implies $g(f((a))=c$.  $f$ is a function so for any $a \in A$, there exists $b \in B$ with $f(a)=b$.  Thus, for any $c \in C$, there exists $b \in B$, $f(a)=b$ such that $g(b)=g(f((a))=c$. Thus $g$ is onto.  
+\end{proof}
+}
+\end{homeworkProblem}
+
+
+\begin{homeworkProblem}[Exercise 2.1.17: Let $f: A \rightarrow B$ be a function. Prove that $f$ is onto if and only if $h \circ f = k \circ f$ implies $h=k$, for every set $C$ and all choice of functions $h: B \rightarrow C$ and $k: B \rightarrow C$. ]
+ \problemLAnswer{
+\begin{proof}
+	$(\Rightarrow)$ \hskip0.5 cm  Assume $f$ is onto. Then, for any $b \in B$, there exists $a \in A$ such that $f(a)=b$. Next, assume $h \circ f = k \circ f$. Then, by definition of function equality, for all $a \in A$, $(h \circ f)(a) = (k \circ f)(a)$. Equivalently, $h(f(a)) = k(f(a))$. Again, since $f$ is onto and because $h, k$ are functions, for any $b \in B$ there exists an $a \in A$ such that $h(b)=h(f(a))$ and $k(b)=k(f(a))$. Thus $h(f(a)) = k(f(a))$, $h(b)=h(f(a))$ and $k(b)=k(f(a))$ imply $h(b) = k(b)$ for any $b \in B$. Therefore, $h=k$.
+\\
+$(\Leftarrow)$ \hskip0.25 cm Assume $h \circ f = k \circ f$ implies $h=k$, for every set $C$ and all choice of functions $h: B \rightarrow C$ and $k: B \rightarrow C$.  Since $h \circ f = k \circ f$, $h, k$ agree on the image on $f$. Suppose $f$ is not onto. Then, there exists $b \in B$ such that there are no $a \in A$ with $f(a)=b$. We will define $h, k$ such that $h, k$ agree on the image of $f$ but not on all of $B$. Let $h(x)=1$ if $x = b$, $k(x)=2$ if $x=b$, and let $h(x)=0=k(x)$ when $x \neq b$. Then, $(h \circ f)(x) = (k \circ f)(x)$ for all $x$ but $h(x)\neq k(x)$ when $x=b$. This is a contradiction, so $f$ must be onto. 
+
+\end{proof}
+}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 2.1.20: Define $f \colon \Z_{mn}\rightarrow \Z_m \times \Z_n$ by $f(\lbrack x \rbrack_{mn})=(\lbrack x\rbrack_m, \lbrack x \rbrack_n)$. Show that $f$ is a function and that $f$ is onto if and only if $\gcd(m,n)=1$.]
+\problemLAnswer{
+\begin{proof}
+$(\Rightarrow)$ \hskip0.5 cm  Assume $f \colon \Z_{mn} \rightarrow \Z_m \times \Z_n$ defined by $f(\lbrack x \rbrack_{mn})=(\lbrack x\rbrack_m, \lbrack x \rbrack_n)$ is a function and is onto. Since $f$ is onto, there must exist some $[x]_{mn} \in \Z_{mn}$ such that $f([x]_{mn})=([0]_m, [1]_n)$. Then, $x \equiv 0 \MOD m) $ and $x \equiv 1 \MOD n)$ so $x=mk$ and $x = 1 + ns$ for some $k, s \in \Z$. Thus, $mk = 1 + ns$ and $1 = ns + (-k)m$. Since we can write $1$ as a linear combination of $m$ and $n$, $\gcd(m,n)=1$.
+\\
+\\
+$(\Leftarrow)$ \hskip0.25 cm 
+Assume $\gcd(m,n,)=1$. 
+\\
+First, we will show $f \colon \Z_{mn} \rightarrow \Z_m \times \Z_n$ defined by $f(\lbrack x \rbrack_{mn})=(\lbrack x\rbrack_m, \lbrack x \rbrack_n)$ is a function. 
+\\
+\textbf{(WD1)} For every $\lbrack x \rbrack_{mn} \in \Z_{mn}$ we have $\left( \lbrack x\rbrack_m, \lbrack x \rbrack_n \right) \in  \Z_m \times \Z_n$ so this condition is satisfied.
+\\
+\textbf{(WD2)} Assume $\lbrack x_1 \rbrack_{mn}=\lbrack x_2 \rbrack_{mn}$. Then, $x_1 \equiv x_2 \MOD mn)$ so $x_1 = x_2 + mn(k)$ for some $k \in \Z$. Thus, $x_1 \equiv x_2 \MOD m)$ and $x_1 \equiv x_2 \MOD n)$ and $(\lbrack x_1 \rbrack_m, \lbrack x_1 \rbrack_n)=(\lbrack x_2 \rbrack_m, \lbrack x_2 \rbrack_n)$. This implies $f(\lbrack x_1 \rbrack_{mn})=f(\lbrack x_2 \rbrack_{mn})$.
+\\
+Now we will show $f$ is onto. Consider any element in $([b]_m, [a]_n) \in \Z_m \times \Z_n$.   If $f([x]_{mn})=([b]_m, [a]_n)$, then $x \equiv b \MOD m) $ and $x \equiv a \MOD n)$. Because $\gcd(m,n)=1$, the Chinese Remainder Theorem implies there exists a unique solution, mod $mn$ to the previous system of congruences. Also, since $\gcd(m,n)=1$ there exists $r,s \in \Z$ such that $rm + sn = 1$. Following the construction in the proof of the Chinese Remainder Theorem, let $x = arm + bsn$, so that $f([arm + bsn]_{mn})=([arm + bsn]_m,[arm + bsn]_n)=([bsn]_m,[arm]_n)$. Since $sn \equiv 1 \MOD m)$ and $rm \equiv 1 \MOD n)$, we have $f([arm + bsn]_{mn})=([b]_m,[a]_n)$.  \end{proof}
+}
+\end{homeworkProblem}
+
+\end{spacing}
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------%
+% The following is copyright and licensing information for
+% redistribution of this LaTeX source code; it also includes a liability
+% statement. If this source code is not being redistributed to others,
+% it may be omitted. It has no effect on the function of the above code.
+%----------------------------------------------------------------------%
+% Copyright (c) 2007, 2008, 2009, 2010, 2011 by Theodore P. Pavlic
+%
+% Unless otherwise expressly stated, this work is licensed under the
+% Creative Commons Attribution-Noncommercial 3.0 United States License. To
+% view a copy of this license, visit
+% http://creativecommons.org/licenses/by-nc/3.0/us/ or send a letter to
+% Creative Commons, 171 Second Street, Suite 300, San Francisco,
+% California, 94105, USA.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+% OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+% CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+% TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+% SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+%----------------------------------------------------------------------%

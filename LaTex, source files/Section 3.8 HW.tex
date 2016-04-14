@@ -1,0 +1,394 @@
+\documentclass[12 pt]{article}
+% Change "article" to "report" to get rid of page number on title page
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{setspace}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{chngpage}
+\usepackage{indentfirst}
+\usepackage{soul,color}
+\usepackage{graphicx,float,wrapfig}
+\usepackage{gauss}
+\usepackage{dcolumn}
+\newcolumntype{2}{D{.}{}{2.0}}
+\usepackage{multicol}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{float}
+\usepackage{wrapfig}
+
+
+
+\graphicspath{ {/home/user/Documents/} }
+
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                  {2.3ex \@plus.2ex}%
+                                  {\normalfont\bfseries}
+                                }
+\makeatother
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\g@matrix
+ {\vbox\bgroup}
+ {\vbox\bgroup\normalbaselines}% restore the standard baselineskip
+ {}{}
+\makeatother
+
+% In case you need to adjust margins:
+\topmargin=-0.75in      %
+\evensidemargin=0in     %
+\oddsidemargin=0in      %
+\textwidth=6.5in        %
+\textheight=9.0in       %
+\headsep=0.25in         %
+
+% Homework Specific Information
+\newcommand{\hmwkTitle}{$\S3.8$ Cosets, Normal Subgroups, and Factor Groups}
+\newcommand{\hmwkDueDate}{Monday,\ November\ 16,\ 2015}
+\newcommand{\hmwkClass}{Math\ 620}
+\newcommand{\hmwkClassTime}{10:00}
+\newcommand{\hmwkClassInstructor}{Boynton}
+\newcommand{\hmwkAuthorName}{Kailee\ Gray}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+
+
+
+% Setup the header and footer
+\pagestyle{plain}                                                       %
+\lhead{\hmwkAuthorName}                                                 %
+\chead{\hmwkClass\ (\hmwkClassInstructor\ \hmwkClassTime): \hmwkTitle}  %
+\rhead{\firstxmark}                                                     %
+\lfoot{\lastxmark}                                                      %
+\cfoot{}                                                                %
+\rfoot{Page\ \thepage\ of\ \pageref{LastPage}}                          %
+\renewcommand\headrulewidth{0.4pt}                                      %
+\renewcommand\footrulewidth{0.4pt}                                      %
+
+% This is used to trace down (pin point) problems
+% in latexing a document:
+%\tracingall
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some tools
+\newcommand{\enterProblemHeader}[1]{\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak%
+                                    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak}%
+\newcommand{\exitProblemHeader}[1]{\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak%
+                                   \nobreak\extramarks{#1}{}\nobreak}%
+
+\newlength{\labelLength}
+\newcommand{\labelAnswer}[2]
+  {\settowidth{\labelLength}{#1}%
+   \addtolength{\labelLength}{0in}%
+   \changetext{}{-\labelLength}{}{}{}%
+   \noindent\fbox{\begin{minipage}[c]{\columnwidth}#2\end{minipage}}%
+   \marginpar{\fbox{#1}}%
+
+   % We put the blank space above in order to make sure this
+   % \marginpar gets correctly placed.
+   \changetext{}{+\labelLength}{}{}{}}%
+
+\setcounter{secnumdepth}{0}
+\newcommand{\homeworkProblemName}{}%
+\newcounter{homeworkProblemCounter}%
+\newenvironment{homeworkProblem}[1][\arabic{homeworkProblemCounter}]%
+  {\stepcounter{homeworkProblemCounter}%
+   \renewcommand{\homeworkProblemName}{#1}%
+   \section{\homeworkProblemName}%
+   \noindent 
+   
+   \enterProblemHeader{\homeworkProblemName}}%
+  {\exitProblemHeader{\homeworkProblemName}}%
+
+\newcommand{\problemAnswer}[1]
+  {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+
+\newcommand{\problemLAnswer}[1]
+    {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+
+\newcommand{\homeworkSectionName}{}%
+\newlength{\homeworkSectionLabelLength}{}%
+\newenvironment{homeworkSection}[1]%
+  {% We put this space here to make sure we're not connected to the above.
+   % Otherwise the changetext can do funny things to the other margin
+
+   \renewcommand{\homeworkSectionName}{#1}%
+   \settowidth{\homeworkSectionLabelLength}{\homeworkSectionName}%
+   \addtolength{\homeworkSectionLabelLength}{0 in}%
+   \changetext{}{-\homeworkSectionLabelLength}{}{}{}%
+   \subsection{\homeworkSectionName}%
+   \enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]}}%
+  {\enterProblemHeader{\homeworkProblemName}%
+
+   % We put the blank space above in order to make sure this margin
+   % change doesn't happen too soon (otherwise \sectionAnswer's can
+   % get ugly about their \marginpar placement.
+   \changetext{}{+\homeworkSectionLabelLength}{}{}{}}%
+
+\newcommand{\sectionAnswer}[1]
+  {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+   \enterProblemHeader{\homeworkProblemName}\exitProblemHeader{\homeworkProblemName}%
+  
+ \newcommand{\R}{{\mathbb R}}
+          \newcommand{\nil}{\varnothing}
+          \newcommand{\N}{{\mathbb N}}
+          \newcommand{\Z}{{\mathbb Z}}
+        \newcommand{\MOD}{{ \ (\text{mod} \ }}
+
+ \newcommand{\C}{{\mathbb C}}
+  \newcommand{\Q}{{\mathbb Q}}
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make title
+\title{\vspace{2in}\textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\\normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate}\\\vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}\vspace{3in}}
+\date{}
+\author{\textbf{\hmwkAuthorName}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{spacing}{1.75}
+\maketitle
+
+ 
+% Uncomment the \tableofcontents and   lines to get a Contents page
+% Uncomment the \setcounter line as well if you do NOT want subsections
+%       listed in Contents
+%\setcounter{tocdepth}{1}
+%\tableofcontents
+% 
+
+% When problems are long, it may be desirable to put a   or a
+% \clearpage before each homeworkProblem environment
+
+
+\begin{flushleft}
+
+\begin{homeworkProblem} [Exercise 3.8.4: For each of the subgroups $H=\{e, r^2\}$ and $K=\{e, s\}$ of $D_4$, list all left and right cosets. ]
+\problemAnswer{ 
+($H=\{e, r^2\}$): Note $[D_4:H]=|D_4|\slash |H|=4$ and $r^2H=H$. Then,
+\begin{eqnarray*}
+rH&=&rr^2H=r^3H \\	
+sH & = & sr^2H \\
+srH & = & srr^2H = sr^3H \\
+\text{Therefore, } \mathcal{L}(H) & = & \{ H, rH, sH, srH \} \\
+Hr^2 & = & H \\
+Hr&=&Hr^2r=Hr^3 \\	
+Hs & = & Hr^2s=Hsr^2 \\
+Hsr & = & Hr^2sr = Hsr^3 \\
+\text{Therefore, } \mathcal{R}(H) & = & \{ H, Hr, Hs, Hsr \} 
+\end{eqnarray*}
+($K=\{e, s\}$):  Note $[D_4:K]=|D_4|\slash |K|=4$ and $sK=K$. Then,
+\begin{eqnarray*}
+rK&=&rsK=sr^3K \\	
+r^2K & = & r^2sK=sr^2K \\
+srK & = & srsK = r^3K \\
+\text{Therefore, } \mathcal{L}(H) & = & \{ K, rK, r^2K, srK \} \\
+Ks & = & K \\
+Kr&=&Ksr \\	
+Ksr^2 & = & Kssr^2=Kr^2 \\
+Ksr^3 & = & Kssr^3 = Kr^3 \\
+\text{Therefore, } \mathcal{R}(H) & = & \{ K, Kr, Ksr^2, Ksr^3 \} 
+\end{eqnarray*}}
+\end{homeworkProblem}
+\begin{homeworkProblem}[Exercise 3.8.6: Prove that if $N$ is a normal subgroup of $G$, and $H$ is any subgroup of $G$, then $H \cap N$ is a normal subgroup of $H$. ]
+\problemAnswer{
+\begin{proof}
+Assume $N$ is a normal subgroup of $G$. Let $H$ is any subgroup of $G$. By exercise 17 in section 3.2, $H \cap N$ is a subgroup of $G$. So $H \cap N \neq \O$. Also $H \cap N \subseteq H$. Let $a, b \in H \cap N$. Since $H \cap N$ is a subgroup of $G$, corollary 3.2.3 implies $ab^{-1} \in H \cap N$ for all $a, b \in H \cap N$. Thus, $H \cap N$ is a subgroup of $H$. Next, consider any $a \in H$; then, $a \in G$. Let $x \in a(H \cap N)a^{-1}$. So, $x=ana^{-1}$ for some $n \in H \cap N$. Notice $a(H \cap N)a^{-1}=aHa^{-1}\cap aNa^{-1}$:
+\[
+x=ana^{-1} \Leftrightarrow n \in H \text{ and } n \in N \Leftrightarrow ana^{-1} \in aHa^{-1} \text{ and } ana^{-1} \in aNa^{-1} \Leftrightarrow x \in aHa^{-1}\cap aNa^{-1}.
+\]
+ Since $N$ is a normal subgroup of $G$, $aNa^{-1}\subset N$ which implies $x \in N$. Also, since $a \in H$, $aHa^{-1} \subseteq H$ so $x \in aHa^{-1}$ implies $x \in H$. Thus, $x \in H \cap N$. Hence $a(H \cap N)a^{-1} \subseteq H \cap N$ for all $a \in H$. Thus, $H \cap N$ is a normal subgroup of H by Theorem 13 of Boynton.	
+\end{proof}
+}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.8.9: Let $G$ be a finite group, and let $n$ be a divisor of $|G|$. Show if $H$ is the only subgroup of $G$ of order $n$, then $H$ must be normal in $G$.]
+ 
+ \begin{lemma}
+ For any subgroup $H$ of $G$ and $a \in G$, $aHa^{-1}$ is a subgroup of $G$.	
+ \end{lemma}
+\begin{proof}
+Let $H \leq G$ and $a \in G$. Since $H \leq G$, $H$ contains the identity element of $G$ so $aea^{-1} \in aHa^{-1}$ and $aea^{-1}=aa^{-1}=e$. Thus, $aHa^{-1}$ contains the identity element and is nonempty. Since $a \in G$ and $H \subseteq G$, $aHa^{-1}\subseteq G$. Consider $ah_1a^{-1}, ah_2a^{-1} \in H$. Then,
+\[
+	(ah_1a^{-1})(ah_2a^{-1})^{-1}  = ah_1a^{-1}(h_2a^{-1})^{-1}a^{-1} =ah_1a^{-1}ah_2^{-1}a^{-1}  =ah_1h_2^{-1}a^{-1}. \text{ Since } h_1h_2^{-1} \in H, 
+\]
+$(ah_1a^{-1})(ah_2a^{-1})^{-1} \in aHa^{-1}$, corollary 3.2.3 implies $aHa^{-1}\leq G$. 
+ \end{proof} 
+ 
+ \begin{proof}
+ Let $G$ be a finite group, and let $n$ be a divisor of $|G|$. Assume $H$ is the only subgroup of $G$ of order $n$. By lemma 0.1 above, $aHa^{-1}\leq G$. Since $H, aHa^{-1} \leq G$ and $G$ has finite order, $H, aHa^{-1}$ must have finite order.   
+ Define $\phi_a: H \rightarrow aHa^{-1}$ where $a$ is any fixed element of $G$ and $\phi_a(x)=axa^{-1}$. \\
+ \textbf{(well-defined)} Since $H \leq G$, for any $x \in H$, $axa^{-1} \in aHa^{-1}$ and if $x_1=x_2$ then $ax_1=ax_2$ and so $ax_1a^{-1}=ax_2a^{-1}$.\\
+ \textbf{(onto)} Consider any $aha^{-1} \in aHa^{-1}$. Then, $h \in H$, so $\phi_a(h)=aha^{-1}$.\\
+ \textbf{(1-1)} Suppose $ax_1a^{-1}=ax_2a^{-1}$. Then, left and right cancellation imply $x_1=x_2$.\\
+ Thus, $\phi_a$ is a bijection between two sets of finite order. Therefore, $|H|=|aHa^{-1}|$. Since $H$ is the only subgroup of order $n$ and $|aHa^{-1}|=n$ it must be the case that $aHa^{-1}=H$. Therefore by theorem 13(3) of Boynton, $H$ must be normal in $G$. 
+  \end{proof} 
+
+\end{homeworkProblem}
+ 
+\begin{homeworkProblem}[Exercise 3.8.10: Let $N$ be a normal subgroup of index $m$ in $G$. Show that $a^m \in N$ for all $a \in G$.]
+\problemAnswer{
+\begin{proof}
+Let $N$ be a normal subgroup of index $m$ in $G$. By theorem 16 of Boynton, $|G \slash N|=m$. Using the identity element of $G \slash N$ given in the proof of theorem 16 of Boynton, since $aN \in G \slash N$, we have $(aN)^m=e_{G \slash N}=eN=N$. By corollary 17, part a, of Boynton, $(aN)^m=a^mN$. Thus, $a^mN=N$ which implies $a^m \in N$ by corollary 4 of Boynton. 
+\end{proof}}
+\end{homeworkProblem}
+\begin{homeworkProblem}[Exercise 3.8.11: Let $N$ be a normal subgroup of $G$. Show that the order of any coset $aN$ in $G\slash N$ is a divisor of $o(a)$, when $o(a)$ is finite. ] 
+\begin{proof}
+ Let $N$ be a normal subgroup of $G$. Consider any coset $aN$ in $G\slash N$ with $o(a)$ finite. Suppose $o(a)=n$. By example 3.8.5 in Beachy, the order of $aN$ is the smallest positive integer $k$ such that $a^k \in N$. Notice $(aN)^n=a^nN=e_{G\slash N}$. Since $G \slash N$ is a group, the order of $aN$ must divide $n=o(a)$. 
+ \end{proof}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.8.12: Let $H$ and $K$ be normal subgroups of $G$ such that $H \cap K = \left< e\right>$. Show that $hk=kh$ for all $h \in H$ and $k \in K$. ]
+\begin{proof}
+Let $H$ and $K$ be normal subgroups of $G$ such that $H \cap K = \left< e\right>$. Consider $h \in H$ and $k \in K$. Since $H, K$ are subgroups, $h^{-1} \in H$ and $k^{-1} \in K$. Also, $H$ and $K$ are normal, so for all $a \in G$, $aHa^{-1} \subset H$ and $aKa^{-1} \subset K$. Then,  $H,K \subset G$, so $kh^{-1}k^{-1}, khk^{-1} \in H$ and $hk^{-1}h^{-1}, hkh^{-1} \in K$. By closure of $H, K$ $hkh^{-1}, k^{-1} \in K$ implies $hkh^{-1}k^{-1} \in K$ and $kh^{-1}k^{-1}, h\in H$ implies $hkh^{-1}k^{-1} \in H$. Therefore $hkh^{-1}k^{-1} \in H \cap K$. Since $H \cap K =\left< e\right>, hkh^{-1}k^{-1}=e$ and $hkh^{-1}=k$. Thus, $hk=kh$ for any $h \in H, k \in K$.
+\end{proof}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.8.13: Let $N$ be a normal subgroup of $G$. Prove that $G \slash N$ is abelian if and only if $N$ contains all elements of the form $aba^{-1}b^{-1}$ for $a, b \in G$. ]
+\begin{proof}
+$(\Rightarrow)$ Let $N$ be a normal subgroup in $G$. Assume $G \slash N$ is abelian. Then, for all $a, b \in G$, $aNbN=bNaN$ so $abN=baN$. Thus, $N=(ba)^{-1}abN=(ba)^{-1}NabN=$\\$abN(ba)^{-1}N=ab(ba)^{-1}N$. $N=ab(ba)^{-1}N$, so by corollary 4 of Boynton $ab(ba)^{-1} \in N$. Hence, $aba^{-1}b^{-1} \in N$ for all $a, b \in G$.
+\\
+$(\Leftarrow)$ Let $N$ be a normal subgroup of $G$. Assume $N$ contains all elements of the form $aba^{-1}b^{-1}$ for $a, b \in G$. Then, by corollary 4 of Boynton, $aba^{-1}b^{-1}=ab(ba)^{-1} \in N$ implies $ab(ba)^{-1}N=N$ and so $(ba)^{-1}N=(ab)^{-1}N$. By definition of inverse element given in proof of theorem 16 (Boynton), $(ba)^{-1}N=(baN)^{-1}=(abN)^{-1} =(ab)^{-1}N$. $G\slash N$ is a group so the inverse of each element in $G \slash N$ is unique, so $baN=abN$. Thus, $bNaN=aNbN$. 
+ 	\end{proof}
+\end{homeworkProblem}
+
+
+\begin{homeworkProblem}[Exercise 3.8.14: Let $N$ be a subgroup of the center of $G$. Show that if $G \slash N$ is a cyclic group, then $G$ must be abelian. ]
+\begin{proof}
+Let $N \leq Z(G)$. Then, $Z(G) \leq G$ implies $N \leq G$. Suppose $G \slash N$ is a cyclic group. Then, $G \slash N = \left< gN \right>$ for some $g \in G$. 
+Let $a, b \in G$. Then, $aN=g^kN$ and $bN = g^hN$ for some $h, k \in \Z$. By theorem 3 part 1, $g^{-h}a, g^{-k}b \in N$. Thus, there exists $n_1, n_2 \in N$ such that $g^{-h}a=n_1$ and $g^{-k}b = n_2$. Since $n_1, n_2 \in Z(G)$ and by associativity in $G$,  \[
+ab = g^kn_1g^hn_2=g^kg^hn_1n_2= g^{k+h}n_1n_2= g^hg^kn_2n_1=g^hn_2g^kn_1=ba.
+\]   
+Thus, $G$ is abelian.   
+\end{proof}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.8.17: Compute the factor group $(\Z_6 \times \Z_4)\slash \left<(2,2)\right>$.]
+\problemAnswer{ $\text{Note } N=\left< (2, 2)\right>= \{ (2,2), (4,0), (0, 2), (2, 0), (4,2), (0,0) \}. \text{ So } |N|=6 \text{ which implies } $\\
+$[\Z_6 \times \Z_4 : N]= \frac{24}{6}=4. \text{ Thus, } \Z_6 \times \Z_4 \slash N \text{ will contain 4 elements. These are listed below.}$
+\begin{eqnarray*}
+	N=\{ (2,2), (4,0), (0, 2), (2, 0), (4,2), (0,0) \}\\
+	(1,1)+N = \{(3,3), (5,1), (1,3), (3,1), (5,3), (1,1))\}\\
+	(1,0)+N=\{ (3,2), (5,0), (1, 2), (3, 0), (5,2), (1,0)  \}\\
+	(0,1)+N=\{ (2,3), (4,1), (0, 3), (2, 1), (4,3), (0,1)  \}
+\end{eqnarray*}
+Since $|\Z_6 \times \Z_4 \slash N|=4$  but does not contain an element of order $4$, $\Z_6 \times \Z_4 \slash N \cong \Z_2 \times \Z_2$. }
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.8.18: Compute the factor group $(\Z_6 \times \Z_4)\slash \left<(3,2)\right>$.]
+\problemAnswer{
+\[\text{Note } N=\left< (3, 2)\right>= \{ (3,2), (0,0) \}. \text{ So } |N|=2 \text{ which implies } 
+\]
+\[
+[\Z_6 \times \Z_4 : N]= \frac{24}{2}=12. \text{ Thus, } \Z_6 \times \Z_4 \slash N \text{ will contain 12 elements. These are listed below.}
+\]
+\begin{eqnarray*}
+	N=(3,2)+N=\{  (3,2), (0,0) \} \qquad & \qquad	(1,1)+N = \{(4,3), (1,1)\}\\
+	(1,0)+N=\{ (4,2), (1,0) \} \qquad & \qquad	(0,1)+N=\{ (3,3), (0,1) \}\\
+	(2,0)+N = \{(5,2), (2,0) \} \qquad & \qquad (0,2)+N = \{ (3,0), (0,2) \}\\
+	(2,2)+N = \{ (5,0), (2,2) \} \qquad & \qquad	(3,1)+N = \{(0,3), (3,1) \}\\
+	(2,3)+N  = \{ (5,1),(2,3) \} \qquad & \qquad (1,2)+N = \{ (4,0), (1,2)\}\\
+	(2,1)+N  = \{ (5,3),(2,1) \} \qquad & \qquad (1,3)+N = \{ (4,1), (1,3)\}
+		\end{eqnarray*}
+Notice $(2,3)+N$ has order $12$ which implies $(\Z_6 \times \Z_4)\slash \left<(3,2)\right>$ is cyclic. \\ Then, $(\Z_6 \times \Z_4)\slash \left<(3,2)\right> \cong \Z_{12}$.
+}
+\end{homeworkProblem}
+\newpage
+\begin{homeworkProblem}[Exercise 3.8.20: Show that $(\Z \times \Z) \slash \left< (1,1)\right>$ is an infinite cyclic group. ]
+
+\begin{proof}
+Define $\phi: \Z \times \Z \rightarrow \Z$ by $\phi((a,b))=a-b$. We will use $\phi$ and the fundamental homomorphism theorem to show $(\Z \times \Z) \slash \left< (1,1)\right> \cong \Z$. First, we will show $\phi$ is a group homomorphism. Addition in $\Z$ is closed, so $\phi$ satisfies WD1. $\phi$ also satisfies WD2: consider $(a_1, b_1), (a_2, b_2) \in \Z \times \Z$ such that $(a_1,b_1)=(a_2, b_2)$. Then, $a_1 = a_2$ and $b_1=b_2$. Subtracting the second equality from the first we obtain, $a_1 - b_1 = a_2 - b_2$ which implies $\phi((a_1, b_1))= \phi((a_2, b_2))$. Thus, $\phi$ is a function. Now consider any $(a_1, b_1), (a_2, b_2) \in \Z \times \Z$, notice $\phi$ is a group homomorphism: 
+\[
+\phi((a_1, b_1)+(a_2, b_2))=\phi((a_1+a_2, b_1+b_2))= a_1+a_2-(b_1 + b_2)=a_1 - b_1 + a_2 - b_2 = \phi((a_1, b_1)) + \phi((a_2, b_2)).
+\]
+Finally, we will show ker$\phi=\left< (1,1) \right>$. Suppose $x \in $ ker$\phi$. Then, $x \in \Z \times \Z$, so $x = (a, b)$ for some $a, b \in \Z$. If $x \in $ ker$\phi$, then $\phi(x)=e_{\Z}=0$. Thus, $\phi((a,b))=0$ so $a-b=0$. Thus, if $(a, b) \in $ ker$\phi$, $a=b$. Note that $\left< (1, 1 )\right> = \{(a,b) \in \Z \times \Z \ | \ a=b\}$. Thus, $x=(a,b) \in \left< (1,1) \right>$. Suppose $x \in \left< (1,1)\right>$. Then $x=(a,b) \in \Z \times \Z$ with $a = b$ so $a-b=0$. Therefore $\phi((a,b))=0$ which implies $x \in $ ker$\phi$. Hence, ker $\phi=\left< (1,1)\right>$. \\
+Next, we will show $\phi$ is onto. Consider any $z \in \Z$. Then, $(z + 1, 1) \in \Z \times \Z$ and $\phi(z+1, 1)=z+1 - 1 = z$. Thus, $\phi$ is onto and so $\phi(\Z \times \Z)=\Z$.  \\
+By, the fundamental homomorphism theorem, $(\Z \times \Z) \slash \left< (1,1)\right> \cong \phi(\Z \times \Z)=\Z$. $\Z=\left<1\right>$ is an infinite cyclic group. By proposition 3.4.3, $(\Z \times \Z) \slash \left< (1,1)\right>$ must be an infinite cyclic group.
+\end{proof}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.8.21: Show that $(\Z \times \Z) \slash \left< (2,2)\right>$ is not a cyclic group. ]
+
+\begin{proof}
+Define $\phi: \Z \times \Z \rightarrow \Z\times \Z_2$ by $\phi((a,b))=(a-b, b \MOD 2))$. We will use $\phi$ and the fundamental homomorphism theorem to show $(\Z \times \Z) \slash \left< (2,2)\right> \cong \Z\times \Z_2$. First, we will show $\phi$ is a group homomorphism. Addition in $\Z$ is closed and $b \MOD 2) \in \Z_2$, so $\phi$ satisfies WD1. $\phi$ also satisfies WD2: consider $(a_1, b_1), (a_2, b_2) \in \Z \times \Z_2$ such that $(a_1,b_1)=(a_2, b_2)$. Then, $a_1 = a_2$ and $b_1=b_2$. Subtracting the second equality from the first we obtain, $a_1 - b_1 = a_2 - b_2$.  If $b_1 = b_2$, $b_1 \MOD 2) = b_2 \MOD 2)$.  which implies $\phi((a_1, b_1))=(a_1 - b_1, b_1 \MOD 2))=(a_2-b_2, b_2 \MOD 2))=\phi((a_2, b_2))$. Thus, $\phi$ is a function. Now consider any $(a_1, b_1), (a_2, b_2) \in \Z \times \Z$, notice $\phi$ is a group homomorphism: $
+\phi((a_1, b_1)+(a_2, b_2))=\phi((a_1+a_2, b_1+b_2))= (a_1+a_2-(b_1 + b_2), (b_1 + b_2)\MOD 2))=
+$\\
+$
+(a_1 - b_1 + a_2 - b_2, b_1 \MOD 2) + b_2 \MOD 2 ))= (a_1- b_1, b_1 \MOD 2))+(a_2-b_2, b_2 \MOD 2))
+$\\
+$=\phi((a_1, b_1)) + \phi((a_2, b_2)).$ \\ Finally, we will show ker$\phi=\left< (2,2) \right>$. Suppose $(a,b) \in $ ker$\phi$. Then, $(a, b) \in \Z \times \Z$ such that $\phi((a,b))=(0, 0)$. Thus, $a-b=0$ and $b \MOD 2) = 0$. Thus, if $(a, b) \in $ ker$\phi$, $a=b$. And because $b \MOD 2)=0$, both $a,b$ must be multiples of $2$. Note that $\left< (2, 2)\right> = \{2(a,b) \in \Z \times \Z \ | \ a=b\}$. Thus, $(a,b) \in \left< (2,2) \right>$. Suppose $(a,b) \in \left< (2,2)\right>$. Then $(a,b) \in \Z \times \Z$ with $a = b$ so $a-b=0$. Also, $(a, b) \in \left< (2,2)\right>$ implies $b \MOD 2) = 0$. Therefore $\phi((a,b))=(0,0)$ which implies $(a,b) \in $ ker$\phi$. Hence, ker $\phi=\left< (2,2)\right>$. \\
+Next, we will show $\phi$ is onto. Consider any $(a,b) \in \Z \times \Z_2$. Note $b=0,1$. First consider $(a,0)$. Notice $(a,0) \in \Z \times \Z$ and $\phi(a,0)=(a-0, 0 \MOD 2))=(a,0)$. Next, consider $(a,1)$. Then, $(a+1,1) \in \Z \times \Z$ and $\phi(a+1,1)=(a+1-1,1 \MOD 2))=(a,1)$. Thus, $\phi$ is onto and so $\phi(\Z \times \Z)= \Z \times \Z_2$. 
+\\
+By the fundamental homomorphism theorem, $(\Z \times \Z) \slash \left< (2,2)\right> \cong \phi(\Z \times \Z)= \Z \times \Z_2$. We will show $\Z \times \Z_2 $ is not a cyclic group. Suppose $\Z \times \Z_2$ is cyclic. Then there must be $(a,b) \in \Z \times \Z_2$ such that $\Z \times \Z_2 = \left< (a,b) \right>$. Since $(1,0) \in \Z \times \Z_2$, $(1,0)=k(a,b)$ so $ka=1$ and $kb=0$ implies $b=0$. Thus, the generator must have the form $(a,0)$. But, $(1,1)$ is also in $\Z \times \Z_2$. So, there must be some $k$ such that $k(a,0)=(1,1)$. No such $k$ exists. Thus, $\Z \times \Z_2$ is not cyclic. By proposition 3.4.3, $(\Z \times \Z) \slash \left< (2,2)\right>$ is not a cyclic group.
+	
+\end{proof}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.8.24: Let $S$ be an infinite set. Let $H$ be the set of all elements $\sigma \in $ Sym$(S)$ such that $\sigma(x)=x$ for all but finitely many $x \in S$. Prove that the subgroup $H$ is normal in Sym$(S)$. ]
+\begin{proof}
+	Let $S$ be an infinite set. Let $H$ be the set of all elements $\sigma \in $ Sym$(S)$ such that $\sigma(x)=x$ for all but finitely many $x \in S$. Consider any $\sigma \in H$ and let $A= \{ a_1, a_2, \dots, a_n \}$ be the set of $ x\in S$ such that $\sigma(x) \neq x$. Note $A$ is finite since $\sigma \in H$. Next, consider any $\tau \in $ Sym$(S)$ and let $\tau(A)=\{\tau(a_1), \tau(a_2), \dots, \tau(a_n)\}$. \\
+	\textbf{Claim: } $\tau \sigma \tau^{-1}(x)=x$ if and only if $x \not \in \{\tau(a_1), \tau(a_2), \dots, \tau(a_n)\}$.\\
+	Suppose $x \in \{\tau(a_1), \tau(a_2), \dots, \tau(a_n)\}$. Then, $x= \tau(a_j)$ and $\tau \sigma \tau^{-1}(\tau(a_j))=\tau \sigma(a_j)$. Note $\sigma(a_j) = a_k$ and $k \neq j$ and so $\tau(a_k) \in \tau(A)$. Thus, $\tau \sigma \tau^{-1}(\tau(a_j))=\tau (a_k)$.   Since $\tau$ is one to one, $\tau(a_j)\neq \tau(a_k)$. Thus, if $x \in \{\tau(a_1), \tau(a_2), \dots, \tau(a_n)\}$, $\tau \sigma \tau^{-1}$ moves $x$ on the finite set $\tau(A)$.\\
+	Suppose $x \not\in \{\tau(a_1), \tau(a_2), \dots, \tau(a_n)\}$. Suppose $\tau \sigma \tau^{-1}(x)= y$ with $x \neq y$. Then, $\sigma \tau^{-1}(x)= \tau^{-1}(y)$. Since $\tau $ is one to one $\tau^{-1}(x)\neq \tau^{-1}(y)$ which implies $\sigma$ moves $\tau^{-1}(x)$. Thus, $\tau^{-1}(x)\in A$ and so $\tau^{-1}(x)=a_j$. Thus, $x = \tau(a_j)$ implies $x \in \tau(A)$ which contradicts our assumption that $x \not\in \{\tau(a_1), \tau(a_2), \dots, \tau(a_n)\}$. Hence, $\tau \sigma \tau^{-1}$ must fix $x$ when $x \not\in \{\tau(a_1), \tau(a_2), \dots, \tau(a_n)\}$.\\
+	Thus, $\tau \sigma \tau^{-1}$ fixes all $x$ except when $x \in \tau(A)$ which implies $\tau \sigma \tau^{-1} \in H$. Hence $H$ is normal in Sym$(S)$.
+	
+\end{proof}
+
+
+\end{homeworkProblem}
+
+\end{flushleft}
+\end{spacing}
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------%
+% The following is copyright and licensing information for
+% redistribution of this LaTeX source code; it also includes a liability
+% statement. If this source code is not being redistributed to others,
+% it may be omitted. It has no effect on the function of the above code.
+%----------------------------------------------------------------------%
+% Copyright (c) 2007, 2008, 2009, 2010, 2011 by Theodore P. Pavlic
+%
+% Unless otherwise expressly stated, this work is licensed under the
+% Creative Commons Attribution-Noncommercial 3.0 United States License. To
+% view a copy of this license, visit
+% http://creativecommons.org/licenses/by-nc/3.0/us/ or send a letter to
+% Creative Commons, 171 Second Street, Suite 300, San Francisco,
+% California, 94105, USA.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+% OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+% CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+% TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+% SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+%----------------------------------------------------------------------%

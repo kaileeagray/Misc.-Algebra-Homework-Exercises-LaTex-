@@ -1,0 +1,562 @@
+\documentclass[12 pt]{article}
+% Change "article" to "report" to get rid of page number on title page
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{setspace}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{chngpage}
+\usepackage{indentfirst}
+\usepackage{soul,color}
+\usepackage{graphicx,float,wrapfig}
+\usepackage{gauss}
+\usepackage{dcolumn}
+\newcolumntype{2}{D{.}{}{2.0}}
+\usepackage{multicol}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{enumerate}
+\usepackage{enumitem}
+
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{float}
+\usepackage{wrapfig}
+
+
+
+\graphicspath{ {/home/user/Documents/} }
+
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                  {2.3ex \@plus.2ex}%
+                                  {\normalfont\bfseries}
+                                }
+\makeatother
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\g@matrix
+ {\vbox\bgroup}
+ {\vbox\bgroup\normalbaselines}% restore the standard baselineskip
+ {}{}
+\makeatother
+
+% In case you need to adjust margins:
+\topmargin=-0.75in      %
+\evensidemargin=0in     %
+\oddsidemargin=0in      %
+\textwidth=6.5in        %
+\textheight=9.0in       %
+\headsep=0.25in         %
+
+%\raggedbottom
+
+
+% Homework Specific Information
+\newcommand{\hmwkTitle}{$\S 4.3$ Existence of Roots}
+\newcommand{\hmwkDueDate}{Monday,\ December \ 7,\ 2015}
+\newcommand{\hmwkClass}{Math\ 620}
+\newcommand{\hmwkClassTime}{10:00}
+\newcommand{\hmwkClassInstructor}{Boynton}
+\newcommand{\hmwkAuthorName}{Kailee\ Gray}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+
+
+
+% Setup the header and footer
+\pagestyle{plain}                                                       %
+\lhead{\hmwkAuthorName}                                                 %
+\chead{\hmwkClass\ (\hmwkClassInstructor\ \hmwkClassTime): \hmwkTitle}  %
+\rhead{\firstxmark}                                                     %
+\lfoot{\lastxmark}                                                      %
+\cfoot{}                                                                %
+\rfoot{Page\ \thepage\ of\ \pageref{LastPage}}                          %
+\renewcommand\headrulewidth{0.4pt}                                      %
+\renewcommand\footrulewidth{0.4pt}                                      %
+
+% This is used to trace down (pin point) problems
+% in latexing a document:
+%\tracingall
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some tools
+\newcommand{\enterProblemHeader}[1]{\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak%
+                                    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak}%
+\newcommand{\exitProblemHeader}[1]{\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak%
+                                   \nobreak\extramarks{#1}{}\nobreak}%
+
+\newlength{\labelLength}
+\newcommand{\labelAnswer}[2]
+  {\settowidth{\labelLength}{#1}%
+   \addtolength{\labelLength}{0in}%
+   \changetext{}{-\labelLength}{}{}{}%
+   \noindent\fbox{\begin{minipage}[c]{\columnwidth}#2\end{minipage}}%
+   \marginpar{\fbox{#1}}%
+
+   % We put the blank space above in order to make sure this
+   % \marginpar gets correctly placed.
+   \changetext{}{+\labelLength}{}{}{}}%
+
+\setcounter{secnumdepth}{0}
+\newcommand{\homeworkProblemName}{}%
+\newcounter{homeworkProblemCounter}%
+\newenvironment{homeworkProblem}[1][\arabic{homeworkProblemCounter}]%
+  {\stepcounter{homeworkProblemCounter}%
+   \renewcommand{\homeworkProblemName}{#1}%
+   \section{\homeworkProblemName}%
+   \noindent 
+   
+   \enterProblemHeader{\homeworkProblemName}}%
+  {\exitProblemHeader{\homeworkProblemName}}%
+
+\newcommand{\problemAnswer}[1]
+  {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+
+\newcommand{\problemLAnswer}[1]
+    {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+
+\newcommand{\homeworkSectionName}{}%
+\newlength{\homeworkSectionLabelLength}{}%
+\newenvironment{homeworkSection}[1]%
+  {% We put this space here to make sure we're not connected to the above.
+   % Otherwise the changetext can do funny things to the other margin
+
+   \renewcommand{\homeworkSectionName}{#1}%
+   \settowidth{\homeworkSectionLabelLength}{\homeworkSectionName}%
+   \addtolength{\homeworkSectionLabelLength}{0 in}%
+   \changetext{}{-\homeworkSectionLabelLength}{}{}{}%
+   \subsection{\homeworkSectionName}%
+   \enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]}}%
+  {\enterProblemHeader{\homeworkProblemName}%
+
+   % We put the blank space above in order to make sure this margin
+   % change doesn't happen too soon (otherwise \sectionAnswer's can
+   % get ugly about their \marginpar placement.
+   \changetext{}{+\homeworkSectionLabelLength}{}{}{}}%
+
+\newcommand{\sectionAnswer}[1]
+  {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+   \enterProblemHeader{\homeworkProblemName}\exitProblemHeader{\homeworkProblemName}%
+  
+ \newcommand{\R}{{\mathbb R}}
+          \newcommand{\nil}{\varnothing}
+          \newcommand{\N}{{\mathbb N}}
+          \newcommand{\Z}{{\mathbb Z}}
+        \newcommand{\MOD}{{ \ (\text{mod} \ }}
+
+ \newcommand{\C}{{\mathbb C}}
+  \newcommand{\Q}{{\mathbb Q}}
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make title
+\title{\vspace{2in}\textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\\normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate}\\\vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}\vspace{3in}}
+\date{}
+\author{\textbf{\hmwkAuthorName}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{spacing}{1.75}
+\maketitle
+
+ 
+% Uncomment the \tableofcontents and   lines to get a Contents page
+% Uncomment the \setcounter line as well if you do NOT want subsections
+%       listed in Contents
+%\setcounter{tocdepth}{1}
+%\tableofcontents
+% 
+
+% When problems are long, it may be desirable to put a   or a
+% \clearpage before each homeworkProblem environment
+
+\begin{flushleft}
+\begin{homeworkProblem}[Exercise 4.3.5: Let $\phi: F_1 \rightarrow F_2$ be an isomorphism of fields. Prove that $\phi(1)=1$. That is, prove that $\phi$ must map the multiplicative identity of $F_1$ to the multiplicative identity of $F_2$.]
+\problemAnswer{
+\begin{proof}
+	Let $\phi: F_1 \rightarrow F_2$ be an isomorphism of fields. Since $F_1, F_2$ are fields they contain a multiplicative and additive idenity. Let $1_1$, $1_2$ denote the multiplicative identities in $F_1, F_2$, respectively; let $0_1$ and $0_2$ be the additive identities of $F_1$ and $F_2$, respectively. First, to show $\phi(1_1)$ has a multiplicative inverse in $F_2$ we will show that $\phi(1_1) \neq 0_2$:\\
+	 Since $F_1, F_2$ are fields, there exists an additive inverse of every element in $F_1, F_2$.  Note that $\phi$ is an isomorphism so it preserves addition; also, $F_1, F_2$ are fields so addition and multiplication are associative. Then:
+	 \begin{eqnarray*}
+	 \phi(0_1) & = & \phi(0_1) + 0_2 \\
+	 & = & \phi(0_1) + \phi(0_1) - \phi(0_1) \\
+	 & = & \phi(0_1 + 0_1) - \phi(0_1) \\
+	 & = & \phi(0_1) - \phi(0_1) \\
+	 & = & 0_2.
+	 \end{eqnarray*}
+Since $\phi$ is a bijection, if $\phi(0_1)=0_2$, $\phi(1_1) \neq 0_2$ so $\phi(1_1)$ has a multiplicative inverse in $F_2$, denote by $\phi(1_1)^{-1}$. Following a similar process and justifications as above, we have: 
+ \begin{eqnarray*}
+	 \phi(1_1) & = & \phi(1_1) \cdot 1_2 \\
+	 & = & \phi(1_1) \cdot (\phi(1_1)\cdot \phi(1_1)^{-1}) \\
+	 & = & (\phi(1_1) \cdot \phi(1_1))\cdot \phi(1_1)^{-1}\\
+	 & = & \phi(1_1 \cdot 1_1)\cdot \phi(1_1)^{-1} \\
+	 & = & \phi(1_1 )\cdot \phi(1_1)^{-1} \\
+	  & = & 1_2 .
+	 \end{eqnarray*}
+\end{proof} }
+\end{homeworkProblem}
+\begin{homeworkProblem}[Exercise 4.3.6: Let $F$ be a field, let $p(x)$ be an irreducible polynomial in $F \lbrack x \rbrack$, and let $E=\{ \lbrack a \rbrack \in F\lbrack x \rbrack \slash \left< p(x) \right> | a \in F \}$. Show that $E$ is a subfield of $F\lbrack x \rbrack \slash \left< p(x) \right>$. ]
+\begin{proof}[\textbf{(prove $E$ is a subfield)}] First, since $p(x)$ is irreducible, note that $F\lbrack x \rbrack \slash \left< p(x) \right>$ is a field by theorem 4.3.6. Given the definition of $E$, it is clear $E$ is a subset of $F\lbrack x \rbrack \slash \left< p(x) \right>$; also $F \neq \O$ so $E \neq \O$. Thus, by exercise 4.3.4, it suffices to show $E$ is closed under addition, subtraction, multiplication, and division of $E$. \\
+\textbf{(addition, subtraction)} Consider any $[a], [b] \in E$. Then, using the definition of $\boxplus$ given in theorem 5 of Boynton, 
+$
+[a] \boxplus [b] = [a+b] \in E \text{ since } F \text{ is closed under } +.
+$
+ If $[a], [b] \in E$, then $a, b \in F$ so $a, b $ have additive inverses in $F$, denote $-a, -b$. Thus
+$
+[a]-[b]=[a] \boxplus [-b] = [a-b]=[a + (-b)] \in E \text{ since } F \text{ is closed under } +$ and $ 
+[b]-[a]=[b] \boxplus [-a] = [b-a]=[b + (-a)] \in E \text{ since } F \text{ is closed under } +.$
+\\
+\textbf{(multiplication, division)} Consider any $[a], [b] \in E$, $[a], [b] \neq 0$. Then, using the definition of $\boxdot$ given in theorem 5 of Boynton, 
+$
+[a] \boxdot [b] = [a\cdot b] \in E \text{ since } F \text{ is closed under } \cdot.
+$
+If $[a], [b] \in E$, then $a, b \in F$ and $[a], [b] \neq 0$ so $a, b $ have multiplicative inverses in $F$, denote $a^{-1}, b^{-1}$. Note
+$
+[a]\div[b]=[a] \boxdot [b]^{-1} = [a] \boxdot [b^{-1}]=[a \cdot b^{-1}] \in E \text{ since } F \text{ is closed under } \cdot.$ Also, $[b]\div[a]=[b] \boxdot [a]^{-1} = [b] \boxdot [a^{-1}]=[b \cdot a^{-1}] \in E \text{ since } F \text{ is closed under } \cdot.$\\
+Hence, $E$ is a subfield of $F$.
+\end{proof}
+\textbf{ Prove $\phi: F \rightarrow E$ defined by $\phi(a)=[a]$ is an isomorphism of fields. }
+\begin{proof}
+\textbf{(well-defined)} Consider $a_1, a_2 \in F$ with $a_1 = a_2$. Then, $a_1 - a_2 = 0$ so $p(x) | (a_1 - a_2)$. Hence $[a_1]=[a_2]$.
+\\
+\textbf{(one to one)} Suppose $\phi(a_1) = \phi(a_2)$ for some $a_1, a_2 \in F$. Then, $[a_1]=[a_2]$ and $[a_1], [a_2] \in F[x] \slash \left< p(x) \right>$ imply $p(x) \ | \ a_1 - a_2$. So there exists some $q(x) \in F[x] \slash \left< p(x) \right>$ such that $a_1 - a_2 = p(x)q(x)$. Since $\deg(a_1 - a_2)=0$, $\deg(p(x) q(x))=0$ and so $\deg(p(x))+\deg(q(x))=0$. But $\deg(p(x))\geq 1$ so $\deg(q(x))<0$ and $q(x) = 0$,  $a_1  = a_2$. 
+\textbf{(onto)} Consider any $[a] \in E$. Then, $a \in F$ and so $\phi(a)=[a]$.\\
+\textbf{(preserves $+$)}   $\text{Let $a_1, a_2 \in F$. Then, }  \text{Let $a_1, a_2 \in F$. Then, } \phi(a_1 + a_2) = [a_1 + a_2]=[a_1] + [a_2]=\phi(a_1)+\phi(a_2).$\\
+\textbf{(preserves $\cdot$)} $ \text{ Let } a_1, a_2 \in F. \text{ Then, } \phi(a_1 \cdot a_2) = [a_1 \cdot a_2]=[a_1] \cdot [a_2]= \phi(a_1)\cdot \phi(a_2)$.
+\\
+Thus, by definition 4.3.7, $\phi$ is an isomorphism of fields.
+ \end{proof} 
+\end{homeworkProblem}
+ 
+\begin{homeworkProblem}[Exercise 4.3.8: Prove that $\R \lbrack x \rbrack \slash \left< x^2 + 2 \right>$ is isomorphic to $\C$. ]
+\begin{proof}
+By proposition 4.3.3 in Beachy, all elements in $\R \lbrack x \rbrack \slash \left< x^2 + 2 \right>$ are of the form $[a + bx]$. Define $\phi: \R \lbrack x \rbrack \slash \left< x^2 + 2 \right> \rightarrow \C$ by $\phi([a + bx])=a + bi \sqrt{2}$. We will show $\phi$ is an isomorphism.\\
+\textbf{(well-defined)} Consider $[a_1+b_1x], [a_2+b_2 x] \in \R \lbrack x \rbrack \slash \left< x^2 + 2 \right>$ with $[a_1+b_1x] = [a_2+b_2 x]$. Then, by definition 4.3.2, $(x^2+2) \ | \ (a_1+b_1x - (a_2+b_2x))$ and so $(x^2+2)  \ | \ (a_1 - a_2+(b_1-b_2)x)$. Thus, there exists $q(x)$ such that $a_1 - a_2+(b_1-b_2)x = (x^2 + 2) q(x)$. Since $\deg(a_1 - a_2+(b_1-b_2)x)=1$ and $\deg(x^2 + 2)=2$, $\deg(q(x))<0$. Thus, $q(x)=0$ and so $a_1 - a_2 + (b_1-b_2)x=0$ which implies $a_1 - a_2 = 0$ and $b_1 - b_2 = 0$. Thus, $a_1+b_1 i \sqrt{2}=a_2+ b_2 i \sqrt{2}$ which implies $\phi ([a_1+b_1x]) = \phi ( [a_2+b_2 x] )$. 
+\\
+\textbf{(one to one)} Suppose $\phi([a_1+b_1x]) = \phi([a_2+b_2 x])$ for some $[a_1+b_1x], [a_2+b_2 x] \in \R \lbrack x \rbrack \slash \left< x^2 + 2 \right>$. Then, $a_1 + b_1 i \sqrt{2} = a_2 + b_2 i \sqrt{2}$; equivalently $a_1 = a_2 $ and $b_1 = b_2$. Thus, $a_1 + b_1 x = a_2 + b_2x$ and so $[a_1 + b_1 x] = [a_2 + b_2x]$. \\
+\textbf{(onto)} Consider any $a+ bi \in \C$. Then, $a, b \in \R$ and so $$
+\phi\left(\left[a+\frac{b}{\sqrt{2}} \ x\right]\right)=a + \frac{b}{\sqrt{2}}i \sqrt{2} = a + b i.
+$$
+\textbf{(preserves addition, multiplication)} Let $[a_1+b_1x], [a_2+b_2 x] \in \R \lbrack x \rbrack \slash \left< x^2 + 2 \right>$. Then, \\$
+\phi([a_1+b_1x] + [a_2+b_2 x]) = \phi[a_1 + b_1 x+ a_2+b_2 x]=\phi[a_1 + a_2 + (b_1 + b_2)x] =a_1 + a_2 + (b_1 + b_2)i \sqrt{2} = a_1 + b_1i \sqrt{2} + a_2 + b_2 i \sqrt{2} =\phi([a_1+b_1x]) + \phi([a_2+b_2 x]).
+$ Next, notice
+$\phi([a_1+b_1x] \cdot [a_2+b_2 x]) = \phi( [(a_1+b_1x)\cdot (a_2+b_2 x)] )= \phi(a_1a_2 + (a_2b_1 + a_1b_2)x + b_1b_2 x^2)$. In $\R \lbrack x \rbrack \slash \left< x^2 + 2 \right>$, $[x^2 + 2] = 0$ so $[x]^2 = -[2]$. Thus, $ b_1b_2 x^2=-2b_1b_2$ so we have 
+\begin{eqnarray*}
+	\phi(a_1a_2 + (a_2b_1 + a_1b_2)x + -2b_1b_2 ) & = & \phi((a_1a_2 - 2b_1b_2)+(a_2b_1+a_1b_2)x) \\
+	&=& (a_1a_2 - 2b_1b_2) + (a_2b_1+a_1b_2)i\sqrt{2} \\
+	& = & (a_1 + b_1i  \sqrt{2})(a_2 + b_2 i \sqrt{2}) \\
+	& = & \phi([a_1+b_1x] ) \cdot\phi( [a_2+b_2 x])
+\end{eqnarray*}
+By definition 4.3.7, $\phi$ is an isomorphism; hence $\R \lbrack x \rbrack \slash \left< x^2 + 2 \right>$ is isomorphic to $\C$.
+\end{proof}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 4.3.9: Prove that $\R\lbrack x \rbrack \slash \left<  x^2 + x + 1 \right>$ is isomorphic to $\C$.]
+
+\begin{proof}
+By proposition 4.3.3 in Beachy, all elements in $\R \lbrack x \rbrack \slash \left<  x^2 + x + 1 \right>$ are of the form $[a + bx]$. Define $\phi: \R \lbrack x \rbrack \slash \left< x^2 + x + 1 \right> \rightarrow \C$ by $\phi([a+bx])= a -\frac{b}{2} + \frac{b\sqrt{3}}{2} i$.
+ We will show $\phi$ is an isomorphism.\\
+\textbf{(well-defined)} Consider $[a_1+b_1x], [a_2+b_2 x] \in \R \lbrack x \rbrack \slash \left<  x^2 + x + 1 \right>$ with $[a_1+b_1x] = [a_2+b_2 x]$. Then, by definition 4.3.2, $(x^2 + x + 1) \ | \ (a_1+b_1x - (a_2+b_2x))$ and so $(x^2 + x + 1)  \ | \ (a_1 - a_2+(b_1-b_2)x)$. Thus, there exists $q(x)$ such that $a_1 - a_2+(b_1-b_2)x = (x^2 + x + 1) q(x)$. Since $\deg(a_1 - a_2+(b_1-b_2)x)=1$ and $\deg(x^2 + x + 1)=2$, $\deg(q(x))<0$. Thus, $q(x)=0$ and so $a_1 - a_2 + (b_1-b_2)x=0$ which implies $a_1 - a_2 = 0$ and $b_1 - b_2 = 0$. Thus, $a_1+b_1 \left( -\frac{1}{2} + \frac{\sqrt{3}}{2} i\right)=a_2+ b_2 \left( -\frac{1}{2} + \frac{\sqrt{3}}{2} i\right)$ which implies $\phi ([a_1+b_1x]) = \phi ( [a_2+b_2 x] )$. 
+\\
+\textbf{(one to one)} Suppose $\phi([a_1+b_1x]) = \phi([a_2+b_2 x])$ for some $[a_1+b_1x], [a_2+b_2 x] \in \R \lbrack x \rbrack \slash \left< x^2 + x+1 \right>$. Then, $$a_1 -\frac{b_1}{2} + \frac{b_1\sqrt{3}}{2} i=a_2 -\frac{b_2}{2} + \frac{b_2\sqrt{3}}{2} i \text{ and }a_1 - a_2 +\frac{b_2-b_1}{2}+ (b_1- b_2)\frac{\sqrt{3}}{2} i = 0. $$
+ Therefore, $b_1 - b_2 = 0$ so $b_1 = b_2$ and $b_2 - b_1 = 0$. Also, $ a_1 - a_2 +\frac{b_2-b_1}{2}  = 0 \text{ so } a_1 - a_2 = 0. $ $\text{ Thus, } a_1 = a_2.
+ $
+ Therefore, $a_1 + b_1 x = a_2 + b_2x$ and so $[a_1 + b_1 x] = [a_2 + b_2x]$. \\
+\textbf{(onto)} Consider any $a+ bi \in \C$. Then, $a, b \in \R$ so $a+\frac{b}{\sqrt{3}}, \frac{2b}{\sqrt{3}} \in \R$ and  $$
+\phi\left(\left[a+\frac{b}{\sqrt{3}}+ \frac{2b}{\sqrt{3}} \ x\right]\right)=a+\frac{b}{\sqrt{3}} - \frac{1}{2}\frac{2b}{\sqrt{3}} + \frac{2b}{\sqrt{3}}\frac{\sqrt{3}}{2}i  = a + b i.
+$$
+\textbf{(preserves addition, multiplication)} Let $[a_1+b_1x], [a_2+b_2 x] \in \R \lbrack x \rbrack \slash \left<  x^2 + x + 1 \right>$. 
+ \begin{eqnarray*}
+ 	\text{Then, } \phi([a_1+b_1x] + [a_2+b_2 x]) &= & \phi([a_1 + a_2 + (b_1 + b_2)x]) \\
+ 	& = & a_1 + a_2 + -\frac{b_1 + b_2}{2}+ \frac{ (b_1 + b_2)\sqrt{3}}{2} \\
+ 	&=& a_1 -\frac{b_1}{2} + \frac{b_1\sqrt{3}}{2} i+a_2 -\frac{b_2}{2} + \frac{b_2\sqrt{3}}{2} i  \\
+ 	& =&\phi([a_1+b_1x]) + \phi([a_2+b_2 x]). \text{ Next, notice }
+\end{eqnarray*}
+$\phi([a_1+b_1x] \cdot [a_2+b_2 x]) = \phi( [(a_1+b_1x)\cdot (a_2+b_2 x)] )= \phi(a_1a_2 + (a_2b_1 + a_1b_2)x + b_1b_2 x^2)$.\\ In $\R \lbrack x \rbrack \slash \left<  x^2 + x + 1\right>$, $[x^2 +x +1] = 0$ so $[x]^2 = -[x]-[1]$. Thus, $ x^2 b_1b_2 =-(x+1)b_1b_2$ so we have $ \phi((a_1a_2 - b_1b_2)+(a_2b_1+a_1b_2-b_1b_2)x)=$
+\begin{eqnarray*}
+	&=& (a_1a_2 - b_1b_2) + \frac{a_2b_1+a_1b_2-b_1b_2}{2} + \frac{\sqrt{3}}{2}(a_2b_1+a_1b_2-b_1b_2)i \\
+	& = & \left(a_1 + \frac{b_1}{2} + b_1i\frac{  \sqrt{3}}{2}\right)  \left(a_2 + \frac{b_2}{2} + b_2i\frac{  \sqrt{3}}{2} \right) =  \phi([a_1+b_1x] ) \cdot\phi( [a_2+b_2 x])
+\end{eqnarray*}
+By definition 4.3.7, $\phi$ is an isomorphism; hence $\R \lbrack x \rbrack \slash \left< x^2 + x+1 \right>$ is isomorphic to $\C$.
+ \end{proof} 
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 4.3.10: Is $\Q \lbrack x \rbrack \slash \left< x^2 +2 \right>$ isomorphic to $\Q \lbrack x \rbrack \slash \left< x^2 + 1 \right>$? ]
+
+\begin{proof}
+No. By proof similar to 4.3.8, 4.3.9, 4.3.13 and by Jason's approval to use, $\Q \lbrack x \rbrack \slash \left< x^2 +2 \right>$ is isomorphic to $\Q(i\sqrt{2})$ and  $\Q \lbrack x \rbrack \slash \left< x^2 + 1 \right>$ is isomorphic to $\Q(i)$. Thus $\Q \lbrack x \rbrack \slash \left< x^2 +2 \right>$ isomorphic to $\Q \lbrack x \rbrack \slash \left< x^2 + 1 \right>$ if and only if $\Q(i\sqrt{2})$ is isomorphic to $\Q(i)$. So, suppose $\Q(i\sqrt{2})$ is isomorphic to $\Q(i)$. 
+First, note that the polynomial $x^2+2$ has a root in $\Q(i\sqrt{2})$, $i\sqrt{2} \in \Q(i \sqrt{2})$: $(i\sqrt{2})^2 + 2 = -2 + 2 = 0$. \\
+ Suppose the polynomial $x^2+2$ has a root in $\Q(i)$. Then, there would be some $a, b \in \Q$ such that $(a+bi)^2 + 2 = 0$. Equivalently, $a^2 - b^2 + 2 = -2abi$. But, $a^2 - b^2 + 2 \in \R, \not \in \C$ and $-2abi \in \C$ so this is a contradiction. Thus, $x^2+2$ does not have a root in $\Q(i)$. \\
+Now, we assumed that $\Q(i\sqrt{2})$ is isomorphic to $\Q(i)$ so there is an isomorphism $\phi : \Q(i\sqrt{2}) \rightarrow \Q(i)$. Let $x \in \Q(i \sqrt{2})$ be a root of $x^2 + 2$. Then, $x^2 + 2 = 0$ and so $\phi(x^2 + 2) = \phi(0)$. $\phi(0)=0$ and $\phi $ preserves multiplication and addition so $\phi(x)^2 + \phi(2) = 0$. Also, $\phi(2) = \phi(1 + 1) = \phi(1) + \phi(1) = 1 + 1 = 2$ which implies there is some $\phi(x) \in \Q(i)$ with $\phi(x)^2 + 2 = 0$ and so $\phi(x)$ is a root of $x^2 +2$. This is a contradiction since we proved $\Q(i)$ does not contain a root of $x^2 +2$. 
+\end{proof}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 4.3.13: Prove that $\Q \lbrack x \rbrack \slash \left<  x^2 - 3 \right> $ is isomorphic to $\Q(\sqrt{3})$.]
+\problemAnswer{ 
+\begin{proof}
+Define 	
+By proposition 4.3.3 in Beachy, all elements in $\Q \lbrack x \rbrack \slash \left< x^2 - 3 \right>$ are of the form $[a + bx]$. Define $\phi: \Q \lbrack x \rbrack \slash \left< x^2 -3 \right> \rightarrow \Q(\sqrt{3})$ by $\varphi([a+bx])=a+b\sqrt{3}$. We will show $\phi$ is an isomorphism.\\
+\textbf{(well-defined)} Consider $[a_1+b_1x], [a_2+b_2 x] \in \Q \lbrack x \rbrack \slash \left< x^2 -3 \right>$ with $[a_1+b_1x] = [a_2+b_2 x]$. Then, by definition 4.3.2, $(x^2-3)  \ | \ (a_1 - a_2+(b_1-b_2)x)$. Thus, there exists $q(x)$ such that $a_1 - a_2+(b_1-b_2)x = (x^2 - 3) q(x)$. Since $\deg(a_1 - a_2+(b_1-b_2)x)=1$ and $\deg(x^2 - 3)=2$, $\deg(q(x))<0$. Thus, $q(x)=0$ and so $a_1 - a_2 + (b_1-b_2)x=0$ which implies $a_1 - a_2 = 0$ and $b_1 - b_2 = 0$. Thus, $a_1+b_1  \sqrt{3}=a_2+ b_2  \sqrt{3}$ which implies $\phi ([a_1+b_1x]) = \phi ( [a_2+b_2 x] )$. 
+\\
+\textbf{(one to one)} Suppose $\phi([a_1+b_1x]) = \phi([a_2+b_2 x])$ for some $[a_1+b_1x], [a_2+b_2 x] \in \Q \lbrack x \rbrack \slash \left< x^2 -3 \right>$. Then, $a_1 + b_1  \sqrt{3} = a_2 + b_2  \sqrt{3}$; because $a_1,a_2, b_1, b_1 \in \Q$ this is equivalent to $a_1 = a_2 $ and $b_1 = b_2$. Thus, $a_1 + b_1 x = a_2 + b_2x$ and so $[a_1 + b_1 x] = [a_2 + b_2x]$. \\
+\textbf{(onto)} Consider any $a+ b\sqrt{3} \in \Q(\sqrt{3})$. Then, $a, b \in \Q$ and so $
+\phi\left(\left[a+ b x\right]\right)= a + b \sqrt{3} .
+$
+\textbf{(preserves addition, multiplication)} Let $[a_1+b_1x], [a_2+b_2 x] \in \Q \lbrack x \rbrack \slash \left< x^2 -3 \right>$. Then, \\$
+\phi([a_1+b_1x] + [a_2+b_2 x]) = \phi[a_1 + b_1 x+ a_2+b_2 x]=\phi[a_1 + a_2 + (b_1 + b_2)x] =a_1 + a_2 + (b_1 + b_2) \sqrt{3} = a_1 + b_1 \sqrt{3} + a_2 + b_2  \sqrt{3} =\phi([a_1+b_1x]) + \phi([a_2+b_2 x]).
+$ Next, notice
+$\phi([a_1+b_1x] \cdot [a_2+b_2 x]) = \phi( [(a_1+b_1x)\cdot (a_2+b_2 x)] )= \phi(a_1a_2 + (a_2b_1 + a_1b_2)x + b_1b_2 x^2)$. In $\Q \lbrack x \rbrack \slash \left< x^2 - 3 \right>$, $[x^2 - 3] = 0$ so $[x]^2 = [3]$. Thus, $ b_1b_2 x^2=3b_1b_2$ so we have 
+\begin{eqnarray*}
+	\phi(a_1a_2 + (a_2b_1 + a_1b_2)x + 3b_1b_2 ) & = & \phi((a_1a_2 +3 b_1b_2)+(a_2b_1+a_1b_2)x) \\
+	&=& (a_1a_2 +3b_1b_2) + (a_2b_1+a_1b_2)\sqrt{3} \\
+	& = & (a_1 + b_1  \sqrt{3})(a_2 + b_2  \sqrt{3}) \\
+	& = & \phi([a_1+b_1x] ) \cdot\phi( [a_2+b_2 x])
+\end{eqnarray*}
+By definition 4.3.7, $\phi$ is an isomorphism; hence $\Q \lbrack x \rbrack \slash \left< x^2 -3 \right>$ is isomorphic to $\Q(\sqrt{3})$.
+
+\end{proof}
+}
+\end{homeworkProblem}
+\begin{homeworkProblem}[Exercise 4.3.14: Show that the polynomial $x^2 - 3$ has a root in $\Q(\sqrt{3})$ but not in $\Q(\sqrt{2})$. Explain why this implies $\Q(\sqrt{3})$ is not isomorphic to $\Q(\sqrt{2})$. ]
+\begin{proof}
+	First, show $x^2 - 3$ has a root in $\Q(\sqrt{3})$ but not in $\Q(\sqrt{2})$. Notice $\sqrt{3} \in \Q(\sqrt{3})$ and $\sqrt{3}^2 - 3 = 0$ so $x^2 - 3$ has a root in $\Q(\sqrt{3})$. Suppose $x^2 - 3$ has a root in $\Q(\sqrt{2})$. Then, there exists some $a + b \sqrt{2}$, with $a, b \in \Q$, such that $(a+b \sqrt{2})^2 - 3 = 0$. Simplifying,
+	\[
+	(a+b \sqrt{2})^2 - 3  = a^2 + 2b^2 + 2ab \sqrt{2} - 3 = (a^2 + 2b^2 - 3) + 2ab \sqrt{2}. 
+	\]
+	\[
+	\text{ If } (a^2 + 2b^2 - 3) + 2ab \sqrt{2} = 0, \  a^2 + 2b^2 - 3= 0 \text{ and } 2ab = 0. \text{ Thus, } a=0 \text{ or } b = 0.
+	\]
+	Suppose $b=0$. Then, $a^2 + 2\cdot 0^2 - 3 = 0$ implies $a^2 = 3$ and so $a = \pm \sqrt{3} \not\in \Q$. Thus, $b \neq 0$. Suppose $a = 0$, then $0^2 + 2\cdot b^2 - 3 = 0$ implies $2b^2 = 3$ and so $b = \pm \sqrt{\frac{3}{2}} \not\in \Q$. Thus, $a \neq 0$. Hence, $x^2 - 3$ does not have a root in $\Q(\sqrt{2})$. \\
+	Next, show $\Q(\sqrt{2})$ is not isomorphic to $\Q(\sqrt{3})$. Suppose $\Q(\sqrt{2})$ is isomorphic to $\Q(\sqrt{3})$. Then, there exists a bijective map $\phi: \Q(\sqrt{3}) \rightarrow \Q(\sqrt{2})$ that preserves multiplication and addition. From above we know there is $x \in \Q(\sqrt{3})$  with $x^2 - 3 = 0$, then $\phi(x^2 - 3) = \phi(0)$. $\phi$ is an isomorphism so $\phi(0)=0$. Also,
+	\[
+	\phi(x^2 - 3) = \phi(x^2) + \phi(-3) = \phi(x)\phi(x) - \phi(3) = \phi(x)^2 - \phi(1+ 1+ 1) =\phi(x)^2 - (\phi(1)+ \phi(1)+ \phi(1)) .
+	\]
+	$
+	 \text{ Hence there must be an element in } \Q(\sqrt{2}), \ \phi(x) \ \text{ with } \phi(x)^2 - 3 =0.
+	$
+	From above, no such element exists in $\Q(\sqrt{2})$. Thus, $\Q(\sqrt{2})$ is not isomorphic to $\Q(\sqrt{3})$.
+\end{proof}
+\end{homeworkProblem}
+\begin{homeworkProblem}[Exercise 4.3.17: Find an irreducible polynomial $p(x)$ of degree $3$ over $\Z_2$, and list all elements of $\Z_2 \lbrack x \rbrack \slash \left<  p(x) \right>$. Give the identities necessary to multiply elements. ]
+\begin{proof}
+	From section 4.2 homework, number 12, the polynomial $x^3 + x + 1$ is irreducible over $\Z_2$. Then, by theorem 9 of Boynton, all elements in $\Z_2 \lbrack x \rbrack \slash \left<  x^3 + x + 1 \right>$ can be represented by some polynomial of the form $ax^2+bx+ c$ for some $a,b,c \in \Z_2$. By statement on page 209 of Beachy, $\Z_2 \lbrack x \rbrack \slash \left<  x^3 + x + 1 \right>$ has $2^3 =8$ polynomials of degree less than $3$. There are $8$ polynomials of degree 2 or less in $\Z_2 \lbrack x \rbrack \slash \left<  x^3 + x + 1 \right>$, so we have the following elements:
+	\[
+	[0], [1], [x], [x+1], [x^2], [x^2+1], [x^2 + x], [x^2+x+1]
+	\]
+	The identities necessary to multiply elements are $[x]^3 = [-x-1]$ and $[x]^4=[-x^2-x]$.
+\end{proof}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 4.3.18: Give addition and multiplication tables for the field $\Z_3 \lbrack x \rbrack \slash \left< x^2+x+2 \right>$. ]
+Let $p(x) = x^2+x+2$ with $p(x) \in \Z_3$. Then, $p(0)=2, p(1) = 1, p(2) = 2$ so by proposition 4.2.7, $p(x)$ is irreducible in $\Z_3$. By theorem 9 of Boynton, all elements in $\Z_3 \lbrack x \rbrack \slash \left<  x^2+x+2 \right>$ can be represented by a polynomial of the form $a+bx$ with $a, b \in \Z_3$. Then, by page 209 of Beachy, $\Z_3 \lbrack x \rbrack \slash \left<  x^2+x+2 \right>$ has $3^2=9$ elements. To simplify the table, brackets have been omitted in listing the congruence classes.\\
+We will use the identity $[x]^2=[2x+1]$ to multiply these elements.
+\\
+\[
+\begin{array}{c||c|c|c|c|c|c|c|c|c}
++ & 0 & 1 & 2 & x & 2x & x + 1 & x+ 2 & 2x + 1 & 2x + 2 \\
+	\hline
+	0&0 & 1 & 2 & x & 2x & x + 1 & x+ 2 & 2x + 1 & 2x + 2\\
+	\hline
+	1 & 1 & 2 & 0 & x + 1 & 2x+ 1 & x + 2 & x & 2x+2 & 2x \\
+		 \hline
+	  2 &2& 0& 1 & x + 2 & 2x+ 2 & x & x+1 & 2x & 2x+1 \\
+	\hline
+	 x & x & x + 1 & x+ 2 & 2x  & 0 & 2x+1& 2x+2 & 1 & 2 \\
+	\hline
+	 2x & 2x  & 2x+ 1 & 2x + 2 & 0 & x & 1 & 2 & x+1 &x+2  \\
+	\hline
+ x + 1 & x+ 1 & x + 2 & x  & 2x+1 & 1 & 2x+2 & 2x & 2  & 0 \\
+	\hline
+  x+ 2 & x + 2 & x  & x+1 & 2x+2 & 2 & 2x &2x+1  & 0 &  1  \\
+	\hline
+2x + 1 & 2x + 1 & 2x+2 & 2x & 1 & x+1 & 2 & 0 & x + 2 & x  \\
+	\hline
+2x + 2 & 2x+2 & 2x & 2x+1 & 2 &x+2  & 0& 1 & x & x + 1   
+\end{array}
+\]
+
+\[
+\begin{array}{c||c|c|c|c|c|c|c|c|c}
+\cdot & 0 & 1 & 2 & x & 2x & x + 1 & x+ 2 & 2x + 1 & 2x + 2 \\
+	\hline
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0   &  0 \\
+	\hline
+ 1 & 0 & 1 & 2 & x & 2x & x + 1 & x+ 2 & 2x + 1 & 2x + 2 \\
+		 \hline
+ 2 & 0 & 2 & 1 & 2x & x  & 2x + 2 & 2x+1 & x+2 & x+1 \\
+	\hline
+x & 0 & x  & 2x & 2x + 1 & x + 2 & 1 & x+1 & 2x+2 & 2 \\
+	\hline
+2x & 0 & 2x & x & x + 2 & 2x+1 & 2 & 2x+2 & x+1 & 1  \\
+	\hline
+x + 1 & 0 & x + 1 & 2x + 2 & 1 & 2 &  x+2 & 2x &x  & 2x+1 \\
+	\hline
+x+ 2 & 0 & x + 2 & 2x+1 & x+1 & 2x+2 & 2x &2   & 1 & x  \\
+	\hline
+2x + 1 & 0 & 2x+1 & x+2 & 2x+2 & x+1 &x  & 1 & 2 & 2x  \\
+	\hline
+2x + 2 & 0 & 2x+2 & x+1 & 2 &1  & 2x+1& x  & 2x & x+2  
+\end{array}
+\]
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 4.3.19: Find a polynomial of degree 3 irreducible over $\Z_3$, and use it to construct a field with 27 elements. List the elements of the field; give the identities necessary to multiply elements.]
+From exercise 13 in section 4.2 homework, the polynomial $x^3 + 2x + 1$ is irreducible over $\Z_3$. By theorem 4.3.6 of Beachy, $\Z_3 \slash \left< x^3 + 2x+1\right>$ is a field. Also, by page 209 of Beachy, $\Z_3 \slash \left< x^3 + 2x+1\right>$ contains $3^3 = 27$ elements. Notice there are $27$ possible polynomials of degree $\leq $ 2 over $\Z_3$, so we have the following elements in $\Z_3 \slash \left< x^3 + 2x+1\right>$  \[
+	[0], [1], [2], [x], [2x], [x+1], [x+2], [2x+1], [2x+2], [x^2], [2x^2], [x^2+1], [x^2+2], [2x^2+1], [2x^2+2],
+\] 
+\[
+[x^2 + x], [x^2+x+1], [x^2+x+2], [x^2 + 2x], [x^2 + 2x+1], [x^2+2x+2]
+\]
+\[
+[2x^2 + x], [2x^2+x+1], [2x^2+x+2], [2x^2 + 2x], [2x^2 + 2x+1], [2x^2+2x+2]
+\]
+We will need the identities $[x]^3 = [x+2]$ and $[x]^4 = [x^2+2x]$ to multiply these elements.
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 4.3.21: Find multiplicative inverses of the elements in the given fields. ]
+\begin{enumerate}[label=(\alph*)]
+\item $[a+bx]$ in $\R \lbrack x \rbrack \slash \left< x^2+1 \right>$ 
+\\
+If $a=0, b=0$, the element $[0]$ does not have a multiplicative inverse. \\
+If $a\neq 0, b =0$, then the inverse of $[a]$ is just $\frac{1}{a}$. \\
+Now suppose $b \neq 0$. Use the division algorithm to divide $x^2 + 1$ by $a+bx$:
+\[
+x^2 + 1 = (a+bx)\left( \frac{1}{b}x - \frac{a}{b^2} \right) + \frac{b^2 + a^2}{b^2}. 
+\]
+\[
+\text{  Equivalently,  } \frac{b^2}{b^2 + a^2}(x^2 + 1) = \frac{b^2}{b^2 + a^2}(a+bx)\left( \frac{1}{b}x - \frac{a}{b^2} \right) + 1. \text{ Thus, in } \R \lbrack x \rbrack \slash \left< x^2+1 \right>,
+\]
+\[
+\ \ 1 = \frac{-b^2}{b^2 + a^2}\left( \frac{1}{b}x - \frac{a}{b^2} \right)(a+bx) = \frac{\left( -bx +a \right)}{b^2 + a^2} (a+bx). \text{ Hence, } [a+bx]^{-1}= \frac{\left( -bx +a \right)}{b^2 + a^2}.
+\]
+\item $[a+bx]$ in $\Q \lbrack x \rbrack \slash \left< x^2-2 \right>$\\
+If $a=0, b=0$, the element $[0]$ does not have a multiplicative inverse. \\
+If $a\neq 0, b =0$, then the inverse of $[a]$ is $\frac{1}{a}$. \\
+Now suppose $b \neq 0$. Use the division algorithm to divide $x^2 -2 $ by $a+bx$:
+\[
+x^2 -2 = (a+bx)\left( \frac{1}{b}x - \frac{a}{b^2} \right) + \frac{a^2 -2b^2}{b^2}. \text{ First, consider } a^2 - 2b^2 \neq 0.
+\]
+\[
+\text{  Then,  } \frac{b^2}{a^2 - 2b^2}(x^2 -2) = \frac{b^2}{a^2 - 2b^2}(a+bx)\left( \frac{1}{b}x - \frac{a}{b^2} \right) + 1. \text{ Thus, in } \Q \lbrack x \rbrack \slash \left< x^2-2\right>,
+\]
+\[
+\ \ 1 = \frac{b^2}{2b^2 - a^2}\left( \frac{1}{b}x - \frac{a}{b^2} \right)(a+bx) = \frac{\left( bx -a \right)}{2b^2 - a^2} (a+bx). \text{ Hence, } [a+bx]^{-1}= \frac{\left( bx -a \right)}{2b^2 - a^2}.
+\]
+Now, if $a^2 - 2b^2 =0$, we'll have $a^2 = 2b^2$ so
+\[
+\left( \frac{a}{b} \right)^2 = 2 \text{ therefore } \frac{a}{b} = \pm \sqrt{2}.
+\]
+However, $a, b \in \Q$, $b \neq 0$ implies $\frac{a}{b} \in \Q$ so $a^2 - 2b^2 \neq 0$.
+\item $[x^2-2x+1]$ in $\Q \lbrack x \rbrack \slash \left< x^3-2 \right>$\\
+The extended Euclidean algorithm yields  \[
+1 = (-5x+6)(x^3 - 2) + (5x^2 + 4x + 13)(x^2-2x+1).
+\]
+However, after expanding $(5x^2 + 4x + 13)(x^2-2x+1)$ and reducing mod $ x^3 - 2$ using the identities $x^3 \equiv 2$ and $x^4 \equiv 2x$, we do not get $1$. So, knowing that the multiplicative inverse is likely of the form $ax^2 + bx+c$, solve for $a,b,c$:
+$
+1 = (ax^2 + bx+ c)(x^2 -2x + 1)= ax^4 + (b-2a)x^3 + (a-2b + c)x^2 + (b-2c)x + c = (a-2b+c)x^2+(2a+b-2c)x + (2b-4a+c).$ Thus, $a,b,c$ must satisfy $a-2b+c=0$, $2a+b-2c=0$, and $2b-4a + c =1$. So, we will row reduce to solve this system of equations and obtain:
+\[
+\left[\begin{array}{@{}rrr|c@{}}
+1&-2&1&0\\
+2&1&-2&0\\
+-4&2&1&1
+\end{array}\right]
+\quad \sim \quad
+\left[\begin{array}{@{}rrr|c@{}}
+1&0&0&3\\
+0&1&0& 4 \\
+0&0&1 & 5
+\end{array}\right]
+\]
+So, $[x^2 - 2x + 1]^{-1} = 3x^2 + 4x + 5$. Now, check this inverse works:
+\[
+(3x^2 + 4x + 5)(x^2 - 2x + 1) = 3x^4 - 2x^3 - 6x + 5 \equiv 3\cdot 2x - 2 \cdot 2 - 6x + 5 = 1.
+\]
+Thus, $[x^2 - 2x + 1]^{-1} = 3x^2 + 4x + 5$. 
+
+\item $[x^2-2x+1]$ in $\Z_3 \lbrack x \rbrack \slash \left< x^3+x^2+2x+1 \right>$\\
+Use the Euclidean Algorithm to find $\gcd(x^2-2x+1, x^3+x^2+2x+1)$:
+\begin{eqnarray*}
+x^3+x^2+2x+1 & = & (x^2-2x + 1)(x) + x + 1 \\
+	x^2-2x + 1 & = & (x+1)x + 1
+\end{eqnarray*}
+Next, back substitute and simplify to find the multiplicative inverse:
+\begin{eqnarray*}
+1 & = & (x^2-2x + 1) - (x+1)x \\
+ & = &  (x^2-2x + 1) -x( x^3+x^2+2x+1 - (x^2-2x + 1)(x)) \\
+ & = & (1 + x^2)(x^2-2x + 1) + (-x)( x^3+x^2+2x+1)
+\end{eqnarray*}
+Thus, $[x^2-2x+1]^{-1}=1 + x^2$.
+
+\item $[x]$ in $\Z_5 \lbrack x \rbrack \slash \left< x^2+x+1 \right>$
+Use the Division Algorithm to find $\gcd(x, x^2+x+1)$:
+\[
+x^2+x+1  =  (x)(x+1) + 1. \text{ Thus, } x^2+x+1  -  (x)(x+1) = 1
+\]
+In $\Z_5 , -x-1 \equiv 4x + 4$ so $[x]^{-1}=4x+4$.
+\item $[x+4]$ in $\Z_5 \lbrack x \rbrack \slash \left< x^3+x+1 \right>$
+\\
+Use the division algorithm to find $\gcd(x+4, x^3 + x + 1)$:
+\[
+x^3 +  x + 1 = (x + 4)(x^2 + x + 2) + 3. \text{ Equivalently, } x^3 +  x + 1 - (x + 4)(x^2 + x + 2) = 3.
+\]
+In $\Z_5$, $3^{-1}=2$, so we can multiply the last equation by $2$ to obtain: 
+\[
+2(x^3 +  x + 1) - 2(x + 4)(x^2 + x + 2) = 1. \text{ Also, } - 2\mod 5 = 3, \text{  so   } 
+\]
+\[
+[x+4]^{-1}=3(x^2+x+2) = 3x^2 + 3x + 6 = 3x^2 + 3x + 1.
+\]
+
+\end{enumerate}
+
+
+\end{homeworkProblem}
+
+
+\end{flushleft}
+\end{spacing}
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------%
+% The following is copyright and licensing information for
+% redistribution of this LaTeX source code; it also includes a liability
+% statement. If this source code is not being redistributed to others,
+% it may be omitted. It has no effect on the function of the above code.
+%----------------------------------------------------------------------%
+% Copyright (c) 2007, 2008, 2009, 2010, 2011 by Theodore P. Pavlic
+%
+% Unless otherwise expressly stated, this work is licensed under the
+% Creative Commons Attribution-Noncommercial 3.0 United States License. To
+% view a copy of this license, visit
+% http://creativecommons.org/licenses/by-nc/3.0/us/ or send a letter to
+% Creative Commons, 171 Second Street, Suite 300, San Francisco,
+% California, 94105, USA.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+% OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+% CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+% TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+% SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+%----------------------------------------------------------------------%

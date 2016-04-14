@@ -1,0 +1,354 @@
+\documentclass[12 pt]{article}
+% Change "article" to "report" to get rid of page number on title page
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{setspace}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{chngpage}
+\usepackage{indentfirst}
+\usepackage{soul,color}
+\usepackage{graphicx,float,wrapfig}
+\usepackage{gauss}
+\usepackage{dcolumn}
+\newcolumntype{2}{D{.}{}{2.0}}
+\usepackage{multicol}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{enumerate}
+\usepackage{mathtools}
+
+\graphicspath{ {/home/user/Documents/} }
+
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                  {2.3ex \@plus.2ex}%
+                                  {\normalfont\bfseries}
+                                }
+\makeatother
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\g@matrix
+ {\vbox\bgroup}
+ {\vbox\bgroup\normalbaselines}% restore the standard baselineskip
+ {}{}
+\makeatother
+
+% In case you need to adjust margins:
+\topmargin=-0.45in      %
+\evensidemargin=0in     %
+\oddsidemargin=0in      %
+\textwidth=6.5in        %
+\textheight=9.0in       %
+\headsep=0.25in         %
+
+% Homework Specific Information
+\newcommand{\hmwkTitle}{$\S3.3$ Constructing Examples}
+\newcommand{\hmwkDueDate}{Monday,\ October\ 19,\ 2015}
+\newcommand{\hmwkClass}{Math\ 620}
+\newcommand{\hmwkClassTime}{10:00}
+\newcommand{\hmwkClassInstructor}{Boynton}
+\newcommand{\hmwkAuthorName}{Kailee\ Gray}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+
+
+
+% Setup the header and footer
+\pagestyle{plain}                                                       %
+\lhead{\hmwkAuthorName}                                                 %
+\chead{\hmwkClass\ (\hmwkClassInstructor\ \hmwkClassTime): \hmwkTitle}  %
+\rhead{\firstxmark}                                                     %
+\lfoot{\lastxmark}                                                      %
+\cfoot{}                                                                %
+\rfoot{Page\ \thepage\ of\ \pageref{LastPage}}                          %
+\renewcommand\headrulewidth{0.4pt}                                      %
+\renewcommand\footrulewidth{0.4pt}                                      %
+
+% This is used to trace down (pin point) problems
+% in latexing a document:
+%\tracingall
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some tools
+\newcommand{\enterProblemHeader}[1]{\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak%
+                                    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak}%
+\newcommand{\exitProblemHeader}[1]{\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak%
+                                   \nobreak\extramarks{#1}{}\nobreak}%
+
+\newlength{\labelLength}
+\newcommand{\labelAnswer}[2]
+  {\settowidth{\labelLength}{#1}%
+   \addtolength{\labelLength}{0in}%
+   \changetext{}{-\labelLength}{}{}{}%
+   \noindent\fbox{\begin{minipage}[c]{\columnwidth}#2\end{minipage}}%
+   \marginpar{\fbox{#1}}%
+
+   % We put the blank space above in order to make sure this
+   % \marginpar gets correctly placed.
+   \changetext{}{+\labelLength}{}{}{}}%
+
+\setcounter{secnumdepth}{0}
+\newcommand{\homeworkProblemName}{}%
+\newcounter{homeworkProblemCounter}%
+\newenvironment{homeworkProblem}[1][\arabic{homeworkProblemCounter}]%
+  {\stepcounter{homeworkProblemCounter}%
+   \renewcommand{\homeworkProblemName}{#1}%
+   \section{\homeworkProblemName}%
+   \noindent 
+   
+   \enterProblemHeader{\homeworkProblemName}}%
+  {\exitProblemHeader{\homeworkProblemName}}%
+
+\newcommand{\problemAnswer}[1]
+  {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+
+\newcommand{\problemLAnswer}[1]
+    {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+
+\newcommand{\homeworkSectionName}{}%
+\newlength{\homeworkSectionLabelLength}{}%
+\newenvironment{homeworkSection}[1]%
+  {% We put this space here to make sure we're not connected to the above.
+   % Otherwise the changetext can do funny things to the other margin
+
+   \renewcommand{\homeworkSectionName}{#1}%
+   \settowidth{\homeworkSectionLabelLength}{\homeworkSectionName}%
+   \addtolength{\homeworkSectionLabelLength}{0 in}%
+   \changetext{}{-\homeworkSectionLabelLength}{}{}{}%
+   \subsection{\homeworkSectionName}%
+   \enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]}}%
+  {\enterProblemHeader{\homeworkProblemName}%
+
+   % We put the blank space above in order to make sure this margin
+   % change doesn't happen too soon (otherwise \sectionAnswer's can
+   % get ugly about their \marginpar placement.
+   \changetext{}{+\homeworkSectionLabelLength}{}{}{}}%
+
+\newcommand{\sectionAnswer}[1]
+  {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+   \enterProblemHeader{\homeworkProblemName}\exitProblemHeader{\homeworkProblemName}%
+  
+ \newcommand{\R}{{\mathbb R}}
+          \newcommand{\nil}{\varnothing}
+          \newcommand{\N}{{\mathbb N}}
+          \newcommand{\Z}{{\mathbb Z}}
+        \newcommand{\MOD}{{ \ (\text{mod} \ }}
+
+ \newcommand{\C}{{\mathbb C}}
+  \newcommand{\Q}{{\mathbb Q}}
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make title
+\title{\vspace{2in}\textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\\normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate}\\\vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}\vspace{3in}}
+\date{}
+\author{\textbf{\hmwkAuthorName}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{spacing}{1.5}
+\maketitle
+ 
+% Uncomment the \tableofcontents and   lines to get a Contents page
+% Uncomment the \setcounter line as well if you do NOT want subsections
+%       listed in Contents
+%\setcounter{tocdepth}{1}
+%\tableofcontents
+% 
+
+% When problems are long, it may be desirable to put a   or a
+% \clearpage before each homeworkProblem environment
+
+\clearpage
+\begin{flushleft}
+
+\begin{homeworkProblem} [Exercise 3.3.6: Construct an abelian group of order $12$ that is not cyclic. ]
+
+\problemAnswer{ Let $G$ be the group we want to construct. If $G$ is not cyclic, then there is no element in $G$ with order $12$. Since the order of the elements of $G$ have to divide the order of $G$, the order of the elements of $G$ must be $1, 2, 3, 4,$ or $ 6$. Note $|\Z_2 \times \Z_6|=12$ and by commutativity of addition in $\Z$, $\Z_2 \times \Z_6$ is abelian. Note there is no element in $\Z_2 \times \Z_6$ has order 12 so $\Z_2 \times \Z_6$ is not cyclic:
+  \[
+ \begin{array}{c||c|c|c|c|c|c|c|c|c|c|c|c}
+   + & (0,0) & (0,1) & (0,2)& (0,3) & (0,4)& (0,5)& (1,0) & (1,1) & (1,2)& (1,3) & (1,4)& (1,5)\\
+ \hline
+\text{order} & 1 & 6 & 3& 2 & 3& 6 & 2 & 6 & 6 & 2 & 6 & 6\\
+ \hline 
+
+ \end{array}
+ \]
+
+
+}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.3.7: Construct a group of order $12$ that is not abelian. ]
+\problemAnswer{
+Consider $S_4$. Note $|S_4|=24$ and $S_4$ is not abelian because $(12)(34)(123)=(243)$ and $(123)(12)(34)=(134)$. Let $A_4$ be the set of all permutations in $S_4$ that can be written as a product of an even number of transpositions. Then, $A_4 \subset S_4$ and $A_4=\{(1)(1),(12)(34), (13)(24), (14)(23), (123), (124), (132), (134), (142), (143), (234), (243)\}$ and so $|A_4|=12$. Consider $\sigma, \tau \in A_4$. Then, $\sigma$ can be written as the product of even number of transpositions and $\tau$ can be written as the product of even number of transpositions. So $\sigma \tau$ can be written as the product of even number of transpositions which implies $\sigma \tau \in A_4$. Thus, by corollary 3.2.4, $A_4$ is a subgroup of $S_4$ so $A_4$ is a group. Also, $(12)(34)(123)=(243)$ and $(123)(12)(34)=(134)$ with $(12)(34), (123) \in A_4$ so $A_4$ is not abelian.
+}
+\end{homeworkProblem}
+ 
+\begin{homeworkProblem}[Exercise 3.3.9: Concerning subgroups of $\Z \times \Z$. \textbf{(a) Let $C_1 = \{ (a, b) \in \Z \times \Z \ | \ a = b \}$. Show that $C_1$ is a subgroup of $\Z \times \Z$.}]
+ \begin{proof}
+ Since $(0,0) \in C_1$, $C_1$ is nonempty; note $(0,0)$ is the identity element of $C_1$ since $(a,b)+(0,0)=(a,b)$ for any $a,b \in \Z$. Also, $C_1 \subseteq \Z \times \Z$. Suppose $(a_1,a_2), (b_1, b_2) \in C_1$. Then, $a_1=a_2$ and $b_1=b_2$. Because $(b_1,b_2)+(-b_1, -b_2)=(0,0)$, $(b_1,b_2)^{-1}=(-b_1, -b_2)$. If $b_1=b_2$, $-b_1=-b_2$ so $(b_1,b_2)^{-1} \in C_1$. Also, $(a_1, a_2)+(-b_1,-b_2)=(a_1-b_1, a_2-b_2)$. Since $a_1=a_2$ and $-b_1=-b_2$, $a_1-b_1=a_2-b_2$. Thus, $(a_1,a_2)+(b_1,b_2)^{-1} \in C_1$. By corollary 3.2.3, $C_1$ is a subgroup of $\Z \times \Z$. 
+ \end{proof}
+ 
+ \noindent \textbf{(b) For each positive integer $n \geq 2$, let $C_n = \{ (a, b) \in \Z \times \Z \ | \ a \ \equiv \  b \ ($mod $ n)\}$. Show that $C_n$ is a subgroup of $\Z \times \Z$.}
+ \begin{proof}
+Since $0 \equiv 0 \MOD n  )$ for any $n$, $(0,0) \in C_n$, $C_n$ is nonempty. Also, $C_n \subseteq \Z \times \Z$. Consider any $(a_1,a_2), (b_1, b_2) \in C_n$. Then, $a_1\equiv a_2 \MOD n)$ and $b_1\equiv b_2 \MOD n)$. Therefore, $a_1+b_1 \equiv a_2 + b_2 \MOD n)$ so $(a_1,a_2)+(b_1,b_2) \in C_n$.  Because $(b_1,b_2)+(-b_1, -b_2)=(0,0)$, $(b_1,b_2)^{-1}=(-b_1, -b_2)$. If $b_1 \equiv b_2 \MOD n)$, $-b_1 \equiv -b_2 \MOD n)$ so $(b_1,b_2)^{-1} \in C_n$. By proposition 3.2.2, $C_n$ is a subgroup of $\Z \times \Z$. 
+ \end{proof}
+  
+ \noindent \textbf{(c) Show that every subgroup of $\Z \times \Z$ that contains $C_1$ has the form $C_n$, for some positive integer $n$.}
+ \begin{proof}
+ Suppose $H$ is a subgroup of $\Z \times \Z$ such that $C_1 \subseteq H$. If for all $(a,b) \in H$, $a=b$, then $a \equiv b \MOD 1)$ so $H = C_1$ and $H$ is in the form $C_n$. \\
+ Suppose there exist $(a,b) \in H$ such that $a \neq b$. Since $H$ is a group, it must be closed under addition and have inverses, so $(-a, -a), (-b,-b) \in H$ and $(a, b) + (-a, -a) = (0, b-a)\in H$. Thus, elements of the form $(0, n) \in H$. If $n<0$, elements in $H$ have inverses so $(0, -n) \in H$. Since $(a,b), a \neq b$ there exists one such $n$, so by the Well-Ordering Principle, we can let $n=|n|$ be the smallest positive integer such that $(0, n)$ or $(0, -n)$ is in $H$. \\
+ We will show $H=C_n$. First, we will show $H \subseteq C_n$. Let $(a,b) \in H$. We want to show that $(a,b) \in C_n$ which is equivalent to showing $a \equiv b \MOD n)$. From above, we know $(a,b) \in H$ implies $(0, b-a) \in H$. By the division algorithm there exists $0 \leq r < n$ and $q \in \Z$ such that $b-a=qn+ r$. We want to show $r =0$. Notice $(0,b-a)=(0,qn)+(0,r)$ and $(0,r)=(0,b-a)-(0,qn)$. Since $(0,b-a), (0,n) \in H$, $(0,qn) \in H$ and therefore $(0,r) \in H$. Thus, we have $r<n$ such that $(0,r) \in H$. But, $n$ was selected as the least possible positive integer with $(0, n) \in H$ so $(0,r)=(0,0)$ and so $r=0$. Since $r=0$, $b-a=nq$ which implies $a\equiv b \MOD n)$ and so $(a,b) \in C_n$.  \\ 
+ Next, show $C_n \subseteq H$. Let $(a,b) \in C_n$. Then, $a \equiv b \MOD n)$ implies $b-a = nk$ and so $b=a+nk$ for some integer $k$. Since $C_1 \subset H$, we know $(a, a)\in H $. Also, from above, we know $(0, n) \in H$. Thus, $(a,b)= (a, a) + k(0,n)$. $H$ is closed under addition so $k(0, n) \in H$ and so $(a, b) \in H$.  
+ Thus, $C_n = H$. 
+ \end{proof}
+  
+\end{homeworkProblem}
+ 
+\begin{homeworkProblem}[Exercise 3.3.10: Let $n>2$ be an integer, and let $X \subseteq S_n \times S_n$ be the set $X= \{ (\sigma, \tau) \ | \ \sigma(1)=\tau(1) \}$. Show that $X$ is not a subgroup of $S_n \times S_n$.]
+\begin{proof}
+ Consider $X \subseteq S_3 \times S_3$. Then, $(\sigma_1, \tau_1)=((12), (123))$ and $(\sigma_2, \tau_2)=((13), (132))$ are in $X$ since $\sigma_1(1)=2= \tau_1(1)$ and $\sigma_2(1)=3= \tau_2(1)$. If $X$ is a subgroup of $S_3 \times S_3$, $(\sigma_1, \tau_1)\circ(\sigma_2, \tau_2) \in X$. Notice $(\sigma_1, \tau_1)\circ(\sigma_2, \tau_2)=((12)(13),(123)(132))=((132),(1))$. Let, $\sigma=(132)$ and $\tau=(1)$. Notice $\sigma(1)=3$ but $\tau(1)=1$. Thus, $((132),(1)) \not \in X$. Since $X$ is not closed, $X$ is not a subgroup of $S_3 \times S_3$
+\end{proof}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.3.13: Let $p, q$ be distinct prime numbers, and $n=pq$. Show $HK = \Z_n^\times$.]
+
+\begin{proof}
+Let $p, q$ be distinct prime numbers, and let $n=pq$ and consider the subgroups $H = \lbrace \lbrack x \rbrack \in \Z_n^\times \ | \ x \equiv \ 1 \ ( $mod $p)\rbrace$ and $K = \lbrace \lbrack y \rbrack \in \Z_n^\times \ | \ y \equiv \ 1 \ ( $mod $q)\rbrace$ of $\Z_n^\times$. By proposition 3.3.2, since $\Z_n^\times$ is abelian, $HK$ is a subgroup of $\Z_n^\times$\\
+From page 41 of Beachy, $|\Z_n^\times|=\varphi(n)=\varphi(pq)=(p-1)(q-1)$. We will show $|HK|=(p-1)(q-1)$.\\
+Since $n=pq$, all elements $h, k \in H, K \subseteq \Z_n^\times$ must satisfy $1 \leq h, k \leq pq-1$. Also, $h \in H \subseteq \Z_n^\times$ implies $h=1+mp$ and $k \in K\subseteq \Z_n^\times$ implies $k=1+nq$ with $m,n \in \Z_n$. Since $1 \leq h, k \leq pq-1$, $0\leq m <q$ and $0 \leq n < p$. Thus, $H$ contains at most $1, 1 + p, 1 + 2p, \dots, 1 + (q-1)p$ and $K$ contains at most $1, 1 + q, 1 + 2q, \dots, 1 + (p-1)q$. We need to check to ensure these elements are in $\Z_n^\times$. Notice if $x \in H$, $x \equiv 1 \MOD p)$. If $x \not\in \Z_n^{\times}$, $x$ is not relatively prime to $n$. Since $x \equiv 1 \MOD p)$ and $p, q$ are the only divisors of $n$, $x \in 1, 1 + p, 1 + 2p, \dots, 1 + (q-1)p$ but $x \not\in \Z_n^{\times}$ implies $q \ | \ x$ so $x \equiv 0 \MOD q)$. Since $\gcd(p,q)=1$, the Chinese Remainder Theorem implies there exists a unique $x$ mod $pq$ with $x \equiv 0 \MOD q)$ and $x \equiv 1 \MOD p)$. Thus, there is exactly one element in $1, 1 + p, 1 + 2p, \dots, 1 + (q-1)p$ that is not in $H \subseteq \Z_n^\times$. Since $1, 1 + p, 1 + 2p, \dots, 1 + (q-1)p$ contains $q$ elements, $|H|=q-1$. \\
+Similarly, if $x \in K$, $x \equiv 1 \MOD q)$. If $1 \leq x \leq n-1$ and $x \not\in \Z_n^{\times}$, $x$ is not relatively prime to $n$. Since $x \equiv 1 \MOD q)$ and $p, q$ are the only divisors of $n$, $x \in 1, 1 + q, 1 + 2q, \dots, 1 + (p-1)q$ but $x \not\in \Z_n^{\times}$ implies $p \ | \ x$ so $x \equiv 0 \MOD p)$. Since $\gcd(p,q)=1$, the Chinese Remainder Theorem implies there exists a unique $x$ mod $pq$ with $x \equiv 0 \MOD p)$ and $x \equiv 1 \MOD q)$. Thus, there is exactly one element in $1, 1 + q, 1 + 2q, \dots, 1 + (p-1)q$ that is not in $\Z_n^\times$. Since $1, 1 + q, 1 + 2q, \dots, 1 + (p-1)q$ contains $p$ elements, $|K|=p-1$.\\
+Next, consider $H \cap K$. If $x \in H \cap K$, then $x \equiv 1 \MOD p)$ and $x \equiv 1 \MOD q)$. Since $\gcd(p,q)=1$ the Chinese Remainder Theorem implies there exists a unique $x \mod pq$ such that $x \equiv 1 \MOD p)$ and $x \equiv 1 \MOD q)$. Thus, $|H \cap K|=1$. \\
+Thus, by exercise 3.3.14, $|HK|=\frac{|H||K|}{|H \cap K|}=\frac{(q-1)(p-1)}{1}=(p-1)(q-1)=\varphi(pq)=\varphi(n)=|\Z_n^\times|$. So $HK$ and $\Z_n^\times$ are finite groups of the same cardinality with $HK \leq \Z_n^\times$ implies $HK = \Z_n^\times$. 
+\end{proof}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.3.15: Let $G$ be a group of order $6$. Show that $G$ must contain an element of order 2. Show that it cannot be true that every element different from $e$ has order 2. ]
+\begin{proof}
+	Let $G$ be a group of order $6$. Then, $G$ is a finite group with an even number of elements, so by exercise 24 in $\S 3.1$, there must exist an element $a \in G$ such that $a^2 = e$ with $a \neq e$. Thus, $o(a)=2$ and so $G$ must have at least one element of order 2.\\
+	Suppose all elements in $G$ have order 2. Let $a, b \in G$. Then, since all elements of $G$ have order 2, $a^2 = e, b^2 = e$. Then, $\left<a\right>=\{e, a\}$ and $\left< b\right>=\{e, b\}$. By proposition 3.2.6(a), $\left<a\right>$ and $\left<b\right>$ are subgroups of $G$. Consider the product of these cyclic groups: $HK$ where $H=\left<a\right>, K=\left<b\right>$. Then, $HK \neq \O$ since $HK$ contains at least $\{e, a, b, ab \}$. Consider any $h \in \left<a\right>$ and $k \in \left<b\right>$. Then, $h=e$ or $a$ and $k = e$ or $b$, so we consider the following cases:\\
+	If $h=e, k=e, h^{-1}=e$ then $h^{-1}kh = eee=e \in K.$ If  $h = e$ and $k = b$ then $h^{-1}kh = ebe=b \in K.$ Suppose $k = e$ and  $h = a.$ Because $a$ has order 2, $a^{-1}=a.$ Thus, $h^{-1}kh = aea=aa=e \in K.$
+\[
+	\begin{array}{l}
+	 \text{ Suppose } h = a \text{ and } k=b. \text{ Then, } h^{-1}kh = aba. \text{ Since } G \text{ is a group and }a, b \in G\text{, so }ab \in G. \\
+	\qquad\text{ Then, from our assumption above }ab \text{ has order 2. So } (ab)(ab)=e.\  b^{-1}=b \text{, so } \\
+	\qquad (ab)(ab)=abab=e \text{ and } ababb=eb. \text{ Hence, } aba=b \in K.
+	\end{array}
+	\]
+	Since $h^{-1}kh \in K$ for all $h \in \left< a \right>$ and $k \in \left< b \right>$, $HK$ is a subgroup of $G$. Notice $|H|=2$, $|K|=2$ and $H \cap K = \{e\}$, so $|H \cap K| =1$. By exercise 14 in $\S 3.3$, 
+	\[
+	|HK|=\frac{|H||K|}{|H \cap K|}=\frac{2 \cdot 2}{1}=4
+	\]
+	However, $4$ does not divide $6$, the order of $G$. But, by Lagrange's Theorem, the order of any subgroup of $G$ must divide $6$. Hence, no such $HK$ exists and so it is not the case that all elements of $G$ have order 2.
+\end{proof}
+ 
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.3.16: Let $G$ be a group of order 6, and suppose that $a, b \in G$ with $a$ of order 3 and $b$ of order 2. Show that either $G$ is cyclic or $ab \neq ba$. ]
+\begin{proof}
+Let $G$ be a group of order 6, and suppose that $a, b \in G$ with $a$ of order 3 and $b$ of order 2. Assume that $ba=ab$. By exercise 25 in $\S 3.2$, since $\gcd(o(a),o(b))=1$ and $ba=ab$, $o(ab)=o(a)o(b)$ so $o(ab)=2\cdot 3= 6$. Thus, $G$ contains an element of order $6$ which implies $G$ is cyclic. We have proved the statement ''Let $G$ be a group of order 6, if $a, b \in G$ with $a$ of order 3 and $b$ of order 2 and $ab=ba$, then $G$ is cyclic." Note this is logically equivalent to the desired statement.  	
+\end{proof}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.3.17: Let $G$ be any group of order 6. Show that if $G$ is not cyclic, then its multiplication table must look like that of $S_3$.]
+\begin{proof}
+	Let $G$ be any group of order 6. Assume that $G$ is not cyclic. By proposition 3.2.11, the order of any element in $G$ must divide $6$. So the order of any element in $G$ must be 1, 2, 3, 6. Since $G$ is not cyclic, no element in $G$ has order 6. Thus, elements of $G$ must have order 1, 2, or 3. Also, by exercise 3.3.15, $G$ must contain an element of order $2$. Let $b \in G$ have order 2. Also by exercise 3.3.15, there must be an element of $G$, other than $e$, that does not have order 2. Therefore there must be an element $a \in G$ that has order 3. Since G is a non-cyclic group of order 6 with $o(a)=3, o(b)=2$, exercise 3.3.16 implies $ab \neq ba$.\\
+	\[
+	\begin{array}{l|l}
+	\text{element(s) in }G & \text{justification}\\
+	\hline
+		e, b, a, a^2&  \text{ order of } b \text{ is } 2, \text{ order of } a \text{ is } 3 \text{ and } G \text{ is a group} \\
+		ab, ba, a^2b, ba^2 & \text{ because } G \text{ is closed and } ab \neq ba \\
+	\end{array}
+	\]
+
+	Notice we've listed 8 elements of $G$. But $G$ has 6 elements, so there must be two pairs of elements that are equivalent. Since $o(a)=3, o(b)=2$, and $b \neq a$, so the elements $e, a, a^2, b$ must be distinct. Notice $ab\neq ba$, so we will test the following equivalencies:
+	 	  \[
+ \begin{array}{c|c}
+ =   & ab, ba   \\
+ \hline
+  e & \text{If } ab=e, ab^2=b \text{ implies } a=b, \text{ but } o(a) \neq o(b). \text{ Thus, } ab\neq e. \text{ Similarly, } ba \neq e. \\
+ \hline 
+  a & \text{If } ab=a, \text{ cancellation implies } b=e, \text{ but } o(b) \neq 1. \text{ Thus, } ab\neq a. \text{ Similarly, } ba \neq a.  \\
+\hline
+  b & \text{If } ab=b, \text{ cancellation implies } a=e, \text{ but } o(a) \neq 1. \text{ Thus, } ab\neq b. \text{ Similarly, } ba \neq b. \\
+\hline
+  a^2 & \text{If } ab=a^2, \text{ cancellation implies } b=a, \text{ but } o(a) \neq o(b). \text{ Thus, } ab\neq a^2. \text{ Similarly, } ba \neq a^2.\\
+  \hline
+  a^2b & \text{If } ab=a^2b, \text{ cancellation implies } a=a^2, \text{ but } o(a) \neq 1. \text{ Thus, } ab\neq a^2b. \\
+   \hline
+  ba^2 & \text{If } ba=ba^2, \text{ cancellation implies } a=a^2, \text{ but } o(a) \neq 1. \text{ Thus, } ba\neq ba^2. \\
+ \end{array}
+ \]
+ Thus, $ab=ba^2$ and $ba=a^2b$ so we can conclude $G = \{e, a, a^2, b, ab, a^2b\}$. Additionally, if $ba=a^2b$ then $aba=a^3b=b$ and $bab=a^2b^2$ implies $bab=a^2$. Using these equalities and the associative property of $G$, we can simplify the following products: $a^2ba=a(aba)=ab$, $ a^2ba^2=a(aba)a=a(b)a=b$, $aba^2=(aba)a=ba=a^2b$, $aba^2 =(aba)a=ba$, $(aba)b=bb=e$, $a^2bab=a^2(bab)=a^2a^2=a$, $a^2a^2b=a(a^3)b=ab$, $ba^2b=(ba^2)b=abb=a$, $a^2ba^2b=a^2(ba^2b)=a^2a=e$, $aba^2b=a(ba^2b)=aa=a^2$ and $a^2ba^2b=a^2(ba^2b)=a^2a=e$. Now, we can construct the multiplication table of $G$:
+	\begin{flushleft}  \[
+ \begin{array}{c|c|c|c|c|c|c}
+    & e & a & a^2 & b & ab & a^2b \\
+ \hline
+  e & e & a & a^2 & b & ab & a^2b \\
+ \hline 
+  a & a & a^2 & e & ab & a^2 & a^3b=b \\
+ \hline
+   a^2 & a^2 & e & a & a^2b & a^2ab=b& a^2a^2b=ab\\
+ \hline
+  b & b & ba=a^2b & ba^2=ab & e & bab=a^2 & ba^2b=a \\
+ \hline
+  ab & ab & aba=b & aba^2=a^2b & a & abab =e& aba^2b=a^2 \\
+ \hline
+  a^2b & a^2b & a^2ba=ab & a^2ba^2=b & a^2b^2=a^2 & a^2bab=a & e \\
+ \end{array}
+ \]
+ Notice this multiplication table looks like the multiplication table of $S_3$ listed on page 116 of Beachy. Thus, if $G$ is not cyclic and has order 6, $G$ has a multiplication that looks like the multiplication table of $S_3$.
+ \end{flushleft}
+\end{proof}
+\end{homeworkProblem}
+\end{flushleft}
+\end{spacing}
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------%
+% The following is copyright and licensing information for
+% redistribution of this LaTeX source code; it also includes a liability
+% statement. If this source code is not being redistributed to others,
+% it may be omitted. It has no effect on the function of the above code.
+%----------------------------------------------------------------------%
+% Copyright (c) 2007, 2008, 2009, 2010, 2011 by Theodore P. Pavlic
+%
+% Unless otherwise expressly stated, this work is licensed under the
+% Creative Commons Attribution-Noncommercial 3.0 United States License. To
+% view a copy of this license, visit
+% http://creativecommons.org/licenses/by-nc/3.0/us/ or send a letter to
+% Creative Commons, 171 Second Street, Suite 300, San Francisco,
+% California, 94105, USA.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+% OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+% CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+% TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+% SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+%----------------------------------------------------------------------%

@@ -1,0 +1,364 @@
+\documentclass[12 pt]{article}
+% Change "article" to "report" to get rid of page number on title page
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{setspace}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{chngpage}
+\usepackage{indentfirst}
+\usepackage{soul,color}
+\usepackage{graphicx,float,wrapfig}
+\usepackage{gauss}
+\usepackage{dcolumn}
+\newcolumntype{2}{D{.}{}{2.0}}
+\usepackage{multicol}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{enumerate}
+\usepackage{mathtools}
+
+\graphicspath{ {/home/user/Documents/} }
+
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+                                  {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                  {2.3ex \@plus.2ex}%
+                                  {\normalfont\bfseries}
+                                }
+\makeatother
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\g@matrix
+ {\vbox\bgroup}
+ {\vbox\bgroup\normalbaselines}% restore the standard baselineskip
+ {}{}
+\makeatother
+
+% In case you need to adjust margins:
+\topmargin=-0.45in      %
+\evensidemargin=0in     %
+\oddsidemargin=0in      %
+\textwidth=6.5in        %
+\textheight=9.0in       %
+\headsep=0.25in         %
+
+% Homework Specific Information
+\newcommand{\hmwkTitle}{Groups HW}
+\newcommand{\hmwkDueDate}{Monday,\ October\ 5,\ 2015}
+\newcommand{\hmwkClass}{Math\ 620}
+\newcommand{\hmwkClassTime}{10:00}
+\newcommand{\hmwkClassInstructor}{Boynton}
+\newcommand{\hmwkAuthorName}{Kailee\ Gray}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+
+
+
+% Setup the header and footer
+\pagestyle{plain}                                                       %
+\lhead{\hmwkAuthorName}                                                 %
+\chead{\hmwkClass\ (\hmwkClassInstructor\ \hmwkClassTime): \hmwkTitle}  %
+\rhead{\firstxmark}                                                     %
+\lfoot{\lastxmark}                                                      %
+\cfoot{}                                                                %
+\rfoot{Page\ \thepage\ of\ \pageref{LastPage}}                          %
+\renewcommand\headrulewidth{0.4pt}                                      %
+\renewcommand\footrulewidth{0.4pt}                                      %
+
+% This is used to trace down (pin point) problems
+% in latexing a document:
+%\tracingall
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some tools
+\newcommand{\enterProblemHeader}[1]{\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak%
+                                    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak}%
+\newcommand{\exitProblemHeader}[1]{\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak%
+                                   \nobreak\extramarks{#1}{}\nobreak}%
+
+\newlength{\labelLength}
+\newcommand{\labelAnswer}[2]
+  {\settowidth{\labelLength}{#1}%
+   \addtolength{\labelLength}{0in}%
+   \changetext{}{-\labelLength}{}{}{}%
+   \noindent\fbox{\begin{minipage}[c]{\columnwidth}#2\end{minipage}}%
+   \marginpar{\fbox{#1}}%
+
+   % We put the blank space above in order to make sure this
+   % \marginpar gets correctly placed.
+   \changetext{}{+\labelLength}{}{}{}}%
+
+\setcounter{secnumdepth}{0}
+\newcommand{\homeworkProblemName}{}%
+\newcounter{homeworkProblemCounter}%
+\newenvironment{homeworkProblem}[1][\arabic{homeworkProblemCounter}]%
+  {\stepcounter{homeworkProblemCounter}%
+   \renewcommand{\homeworkProblemName}{#1}%
+   \section{\homeworkProblemName}%
+   \noindent 
+   
+   \enterProblemHeader{\homeworkProblemName}}%
+  {\exitProblemHeader{\homeworkProblemName}}%
+
+\newcommand{\problemAnswer}[1]
+  {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+
+\newcommand{\problemLAnswer}[1]
+    {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+
+\newcommand{\homeworkSectionName}{}%
+\newlength{\homeworkSectionLabelLength}{}%
+\newenvironment{homeworkSection}[1]%
+  {% We put this space here to make sure we're not connected to the above.
+   % Otherwise the changetext can do funny things to the other margin
+
+   \renewcommand{\homeworkSectionName}{#1}%
+   \settowidth{\homeworkSectionLabelLength}{\homeworkSectionName}%
+   \addtolength{\homeworkSectionLabelLength}{0 in}%
+   \changetext{}{-\homeworkSectionLabelLength}{}{}{}%
+   \subsection{\homeworkSectionName}%
+   \enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]}}%
+  {\enterProblemHeader{\homeworkProblemName}%
+
+   % We put the blank space above in order to make sure this margin
+   % change doesn't happen too soon (otherwise \sectionAnswer's can
+   % get ugly about their \marginpar placement.
+   \changetext{}{+\homeworkSectionLabelLength}{}{}{}}%
+
+\newcommand{\sectionAnswer}[1]
+  {\noindent\begin{minipage}[c]{\columnwidth}#1\end{minipage}}%
+   \enterProblemHeader{\homeworkProblemName}\exitProblemHeader{\homeworkProblemName}%
+  
+ \newcommand{\R}{{\mathbb R}}
+          \newcommand{\nil}{\varnothing}
+          \newcommand{\N}{{\mathbb N}}
+          \newcommand{\Z}{{\mathbb Z}}
+        \newcommand{\MOD}{{ \ (\text{mod} \ }}
+
+ \newcommand{\C}{{\mathbb C}}
+  \newcommand{\Q}{{\mathbb Q}}
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make title
+\title{\vspace{2in}\textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\\normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate}\\\vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}\vspace{3in}}
+\date{}
+\author{\textbf{\hmwkAuthorName}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{spacing}{1.75}
+\maketitle
+\newpage
+% Uncomment the \tableofcontents and \newpage lines to get a Contents page
+% Uncomment the \setcounter line as well if you do NOT want subsections
+%       listed in Contents
+%\setcounter{tocdepth}{1}
+%\tableofcontents
+%\newpage
+
+% When problems are long, it may be desirable to put a \newpage or a
+% \clearpage before each homeworkProblem environment
+
+\clearpage
+
+\begin{homeworkProblem} [Exercise 3.1.2: For each binary operation $*$ defined on a set below, determine whether or not $*$ gives a group structure on the set. If it is not a group, say which axioms fail to hold. (a) Define $*$ on $\Z$ by $a*b=ab$.]
+
+\problemAnswer{
+\textbf{(closure)} Multiplication of integers is closed, so for any $a, b \in \Z$ implies $a*b \in \Z$.
+\\
+\textbf{(associativity)} Multiplication of integers is associative, so for any $a, b, c \in \Z$, $a*(b*c)=a(bc)=(ab)c=(a*b)*c$. 
+\\
+\textbf{(identity)} For any $a \in \Z$, $a\cdot 1=a=1 \cdot a$, so $a*1= a\cdot 1=a=1 \cdot a= 1*a$. 
+\\
+\textbf{(inverses)} Consider any $a \in \Z$. If $a^{-1} \in \Z$, then $a*a^{-1}=1=a^{-1}*a$. Equivalently, $a^{-1}= \frac{1}{a}$. If $a=0$, $a^{-1}$ does not exist. Also, $\frac{1}{a} \in \Z$ only if $a = \pm 1$. Thus, not all elements in $\Z$ have an inverse element in $\Z$ under $*$ so $(\Z, *)$ is not a group.
+
+\textbf{(b) Define $*$ on $\Z$ by $a*b=\max\lbrace a, b \rbrace$.}\\
+\textbf{(closure)} For any $a, b \in \Z$, The image of $*$ is either $a$ or $b$ so $*$ is closed in $\Z$.
+\\
+\textbf{(associativity)} Consider $a, b, c \in \Z$. Then, $a*(b*c)=\max \{a, \max\{b, c\}\}= \max \{a, b, c\}= \max \{\max\{a, b\}, c\} = (a*b)*c$. \\
+\textbf{(identity)} Suppose there exists some $e \in \Z$ such that $e*a=a*e = a$ for any $a \in \Z$. Then, $\max\{a, e\}= a = \max\{e, a\}$. Since $e, 1 \in \Z$, $ e - 1 \in \Z$, so if $e$ is the identity, $\max\{ e, e-1 \} = e - 1$. However, $\max\{ e, e-1 \} = e$. Because $(\Z, *)$ does not contain an identity element, it not a group. \\
+\textbf{(inverses)} Because $(\Z, *)$ does not contain an identity element, we cannot determine inverses of the elements in $(\Z, *)$. 
+\vspace{.4cm}
+}
+\textbf{(c) Define $*$ on $\Z$ by $a*b=a-b$.} \\
+\textbf{(closure)} For any $a, b \in \Z$, $a-b \in \Z$, so $a*b \in \Z$.
+\\
+\textbf{(associativity)} Notice $1, 2, -3 \in \Z$. Then, $1*(2*-3)= 1 - (2 - (-3))= -4$. However, $(1*2)*-3=(1 - 2) - (-3)=2$. Thus, $*$ is not associative and so $(\Z, *)$ is not a group. \\
+\textbf{(identity)} Suppose there exists some $e \in \Z$ such that $e*a=a*e = a$ for any $a \in \Z$. Then, $e-a= a =a-e$ which implies $e = 2a$ and $e = 0$. However, $e \neq 0$ since $0 - a =-a$ and $e \neq 2a$ since $a - 2a = -a$. So there is no identity under $*$. Thus, $(\Z, *)$ does not contain an identity element and is therefore not a group. \\
+\textbf{(inverses)} Because $(\Z, *)$ does not contain an identity element, we cannot determine inverses of the elements in $(\Z, *)$.  \\
+\noindent \textbf{(d) Define $*$ on $\Z$ by $a*b=|ab|$.} \\
+\textbf{(closure)} For any $a, b \in \Z$, $ab \in \Z$ so $|ab| \in \Z$. Thus, $a*b \in \Z$ so $\Z$ is closed under $*$.
+\\
+\textbf{(associativity)} Consider $a, b, c \in \Z$. Then, $a*(b*c)=|a|bc||= |abc|=||ab|c|= (a*b)*c$. \\
+\textbf{(identity)} Notice if $(\Z, *)$ contains an identity element, $e$, then since $-2 \in \Z$, $-2*e$ must equal $-2$ and $e*-2$ must equal $-2$. However, $-2*e=|-2e|\geq 0$ and $e*-2=|e(-2)|\geq 0$, so $-2*e$ can not equal $-2$ and $e*-2$ can not equal $-2$. Thus, $(\Z, *)$ does not contain an identity element and is therefore not a group. \\
+\textbf{(inverses)} Because $(\Z, *)$ does not contain an identity element, we cannot determine inverses of the elements in $(\Z, *)$.  \\
+\noindent \textbf{(e) Define $*$ on $\R^+$ by $a*b=ab$.} \\
+\textbf{(closure)} For any $a, b \in \R^+$, $ab \in \R^+$ so $a*b \in \R^+$. Thus $\R^+$ is closed under $*$.
+\\
+\textbf{(associativity)} Consider $a, b, c \in \R^+$. Then, by associativity of multiplication in $\R$, $a*(b*c)=a(bc)= (ab)c= (a*b)*c$. \\
+\textbf{(identity)} For any $a \in \R^+$, $a\cdot 1 = a = 1 \cdot a$ so $a*1=a=1*a$. Thus, $1$ is the identity element in $(\R^+, *)$. \\
+\textbf{(inverses)} For any $a \in \R^+$, since $a \neq 0$, $\frac{1}{a} \in \R^+$ and $\frac{1}{a}\cdot a = 1 = a \cdot \frac{1}{a}$. Thus, $\frac{1}{a}* a = 1 = a * \frac{1}{a}$ so $\frac{1}{a}$ is the inverse of any element in $\R^+$. \\
+Hence, $(\R^+, *)$ defines a group.\\
+\noindent \textbf{(f) Define $*$ on $\Q$ by $a*b=ab$.} \\
+\textbf{(closure)} For any $a, b \in \Q$, $a=\frac{m_1}{n_1}, b = \frac{m_2}{n_2}$ for $m_1, n_1, m_2, n_2 \in \Z$ with $n_1, n_2 \neq 0$. Then, $ab = \frac{m_1}{n_1} \frac{m_2}{n_2}=\frac{m_1 m_2}{n_1 n_2}$. Since $m_1 m_2, n_1 n_2 \in \Z$ and $n_1 n_2 \neq 0$, $ab \in \Q$ so $a*b \in \Q$. Thus $\Q$ is closed under $*$.
+\\
+\textbf{(associativity)} Consider $a, b, c \in \Q$. Then, by associativity of multiplication in $\R$, $a*(b*c)=a(bc)= (ab)c= (a*b)*c$. \\
+\textbf{(identity)} Since $1 \in \Q$ and because for any $a \in \Q$, $a\cdot 1 = a = 1 \cdot a$ so $a*1=a=1*a$. Thus, $1$ is the identity element in $(\Q, *)$. \\
+\textbf{(inverses)} Note $0 \in \Q$. Suppose $0$ has an inverse in $\Q$, $a^{-1}$. Then,  $a^{-1}*0=1=0*a^{-1}$. However, $a^{-1}\cdot 0=0=0\cdot a^{-1}$. Thus, $0$ does not have an inverse in $\Q$. Notice for any $a \in \Q$ with $a \neq 0$, if $a = \frac{m}{n}$, $a^{-1}=\frac{n}{m}$ since $a * a^{-1} =a\cdot a^{-1} = 1 = a^{-1} \cdot a=a^{-1} * a$. However since $0$ does not have an inverse, $(\Q, *)$ is not a group.   
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.1.9: Let $G=\lbrace x \in \R \ | \ x>0 $ and $ x \neq 1 \rbrace$. Define the operation $*$ on $G$ by $a*b=a^{\ln b}$ for all $a, b \in G$. Prove that $G$ is an abelian group under $*$. ]
+\problemAnswer{ 
+\textbf{(closure)} For any $a, b \in G$, $b>0, b\neq 1$ so $\ln b \neq 0$ and $\ln b > 0$ so $a^{\ln b}>0$ and $a^{\ln b} \neq 1$. Thus $a*b=a^{\ln b} \in G$. 
+\\
+\textbf{(associativity)} Consider $a, b, c \in G$. Then, $a*(b*c)=a*(b^{\ln c})= a^{\ln( b^{\ln c})}$. By properties of $\ln$, $a^{\ln( b^{\ln c})}=a^{\ln c \ln b}$. Also, $(a*b)*c=(a^{\ln b})*c=(a^{\ln b})^{\ln c}$. Then, $(a^{\ln b})^{\ln c}= a^{\ln b \ln c} = a^{\ln c \ln b}$. Thus, $a*(b*c)=(a*b)*c$. \\
+\textbf{(identity)} The identity in $(G, *)$ is the mathematical constant $e$: for any $a \in G$, $a*e=a^{\ln e}= a^1=a$ and $e*a=e^{\ln a}=a$. \\
+\textbf{(inverses)} 
+\[
+\text{Claim: the inverse of any element } a \in G \text{ , } a^{-1}=e^{(\ln a)^{-1}}.
+\]
+\begin{proof}
+Since $a \in G$, $a>0$ and $a \neq 1$. Then, $\ln a \neq 0$ and $\ln a>0$. Thus, $(\ln a)^{-1} \in \R$ and $(\ln a)^{-1}>0$ and so $e^{(\ln a)^{-1}}>0$ and $e^{(\ln a)^{-1}}\neq 1$. Hence, $e^{(\ln a)^{-1}}\in G$. Additionally, 
+	\[
+	e^{(\ln a)^{-1}}*a = (e^{(\ln a)^{-1}})^{\ln a}= e^{(\ln a)^{-1} \ln a}= e^1=e. 
+	\]
+	
+	\[
+	a*e^{(\ln a)^{-1}} = a^{1^{(\ln a)^{-1}}}= a^{(\ln a)^{-1}}. 
+	\]
+ $a^{(\ln a)^{-1}}= x$ for some $x \in G$. Then, $\ln (a^{(\ln a)^{-1}})= \ln x$ and $(\ln a)^{-1}(\ln a) = 1$ implies $\ln x = 1$. Thus, $x = e$. 
+\end{proof}
+
+\textbf{(commutativity)} Notice for any $a, b \in G$, $a*b=a^{\ln b}$. From closure of $*$ shown above, $a*b=a^{\ln b}=x$ for some $x \in G$. Then, $\ln a^{\ln b}= \ln x$ and $\ln a^{\ln b}= (\ln b) \ln a = \ln a (\ln b) = \ln b^{\ln a}$. Thus, $\ln b^{\ln a} = \ln x$ so $x = b^{\ln a}= b*a$. Therefore, for any $a, b \in G$, $a*b = b*a$.
+Hence by definition 3.1.9 in Beachy, $G$ is abelian.
+
+}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.1.10: Show that the set $A= \lbrace f_{m,b}: \R \rightarrow \R \ | \ m \neq 0 $ and $ f_{m,b}(x)=mx+b \rbrace$ of affine functions from $\R$ to $\R$ forms a group under composition of functions.]
+\problemAnswer{
+\textbf{(closure)} For any $f_{m_1, b_1}, g_{m_2, b_2} \in A$ with $m_1, m_2 \neq 0$, $f_{m_1, b_1}(x)=m_1 x+b_1$ and $g_{m_2, b_2}(x) = m_2 x + b_2$.  Then $f_{m_1, b_1} \circ g_{m_2, b_2} = f_{m_1, b_1}( g_{m_2, b_2}) = m_1 g_{m_2, b_2} + b_1 = m_1(m_2x+b_2)+b_1 = m_1 m_2 x + m_1 b_2 + b_1$. Since $m_1, m_2 \neq 0$, $m_1 m_2 \neq 0$, so $f_{m_1, b_1} \circ g_{m_2, b_2} \in A$.
+\\
+\textbf{(associativity)} Consider $f_{m_1, b_1}, g_{m_2, b_2}, k_{m_3, b_3} \in A$. Then, $f_{m_1, b_1} \circ (g_{m_2, b_2} \circ k_{m_3, b_3}) = $\\ $f_{m_1, b_1} \circ (g_{m_2, b_2} (k_{m_3, b_3}))= f_{m_1, b_1} (m_2(m_3x+b_3)+b_2)=m_1(m_2(m_3x+b_3)+b_2) + b_1$. By associativity, distributivity, and commutativity of multiplication and addition in $\R$ we can write $m_1(m_2(m_3x+b_3)+b_2) + b_1= m_1 m_2 (m_3 x + b_3) + m_1 b_2 + b_1=m_1 m_2 (k_{m_3, b_3}) + m_1 b_2 + b_1$. From above we know $f_{m_1, b_1} \circ g_{m_2, b_2} = m_1 m_2 x + m_1 b_2 + b_1$, so $m_1 m_2 (k_{m_3, b_3}) + m_1 b_2 + b_1=(f_{m_1, b_1} \circ g_{m_2, b_2}) \circ k_{m_3, b_3}$. Thus, $f_{m_1, b_1} \circ (g_{m_2, b_2} \circ k_{m_3, b_3}) =(f_{m_1, b_1} \circ g_{m_2, b_2}) \circ k_{m_3, b_3}$. \\
+\textbf{(identity)} The identity in $(A, \circ)$ is the function $I(x)=x$:\\ for any $f_{m,b} \in A$, $f_{m,b}\circ I = f_{m,b}(I(x))=f_{m,b}(x)$ and $I \circ f_{m,b} = I(f_{m,b}(x))=f_{m,b}(x)$. \\
+\textbf{(inverses)} 
+\[
+\text{Claim: the inverse of any element } f_{m,b} \in A \text{ , } f^{-1}(x)=\frac{1}{m}x-\frac{b}{m}.
+\]
+\begin{proof}
+Since $f_{m,b} \in A$, $m\neq 0$ and $m, b \in \R$. Therefore, $\frac{1}{m}, \frac{b}{m} \in \R$ and $\frac{1}{m}\neq 0$. Hence $f^{-1}(x)=\frac{1}{m}x-\frac{b}{m} \in A$. Additionally, 
+	\[
+	f_{m,b} \circ f^{-1} = f_{m,b}\left(\frac{1}{m}x-\frac{b}{m}\right)= m\left(\frac{1}{m}x-\frac{b}{m}\right)+b= x - b + b = x = I(x). 
+	\]
+	
+	\[
+	f^{-1} \circ f_{m,b}   = f^{-1}(f_{m,b}(x))= f^{-1}(mx+b)= \left(\frac{1}{m}(mx+b)-\frac{b}{m}\right)= x + \frac{b}{m} - \frac{b}{m} = x = I(x).  
+	\]
+Therefore $(A, \circ)$ is a group.
+\end{proof}
+}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.1.17: Let $G$ be a group. For $a, b \in G$, prove that $(ab)^n=a^n b^n$ for all $n \in \Z$ if and only if $ab = ba$.]
+ \begin{proof}
+Let $G$ be any group and let $e$ be the identity element of the group $G$.\\ 
+ ($\Rightarrow$) Assume $(ab)^n=a^n b^n$ for all $n \in \Z$ and any $a, b \in G$. So, this equality most hold $n = 2$. Then, $(ab)^2 = a^2 b^2$ and so $abab = aabb$. Since $a, b \in G$, there exists $a^{-1}, b^{-1} \in G$ such that $aa^{-1}=a^{-1}a=e$ and $bb^{-1}=b^{-1}b=e$. Thus, $(ab)(ab) = (aa)(bb)$ implies $a^{-1} (ab)(ab)b^{-1}= a^{-1 }(aa)(bb) b^{-1}$. $G$ is associative, so we can write $(a^{-1} a)ba (bb^{-1})= (a^{-1 }a)ab(b b^{-1})$. Thus, $ebae=eabe$ and so $(eb)(ae)=(ea)(be)$. Since $eb =b, ae= a, ea = a, be = b$ we have $ba = ab$ for any $a, b \in G$. Thus, $G$ is abelian.\\
+ \\
+  ($\Leftarrow$) Assume for any $a, b \in G$, $ab = ba$. Thus, $G$ is abelian. Suppose $n >0$. First, consider $n = 2$, then  $G$ is an abelian group, so we apply the associative and commutative properties of $G$ to obtain 
+ $(ab)^2 = (ab)^2 = (ab)(ab) = a(ba)b = a(ab)b=(aa)(bb)=a^2 b^2$. \\
+  So the given statement is true for $n = 2$. Assume $(ab)^k = a^k b^k$ for $1< k < n$. Then, applying the commutative and associative properties of $G$, $(ab)^{k + 1} = (ab)^k (ab) = a^k b^k ba = a^k b^{k + 1} a = a^k a b^{k +1} = a^{k + 1} b^{k +1}$. By the principle of induction, $(ab)^n = a^n b^n$ for $n >0 $.\\
+  \\
+  Suppose $n<0$ and let $m=-n$. Then, $m>0$, so by our previous conclusion:  $(an)^m = a^mb^m.$  Then, by page 92 of Beachy, two elements of $G$ are equal if and only if their inverses are equal, so we can write: $(ab)^{-m} = a^{-m}b^{-m}.$  Thus, $(ab)^n = a^n b^n$  when $n < 0.$ \\
+  Finally, suppose $n=0$. Then, by extension of definition 3.1.4, given on the last paragraph of page 92 of Beachy, $(ab)^n=(ab)^0=e$ and $a^n b^n = a^0 b^0 = ee = e$ so $(ab)^n = a^nb^n$ when $n = 0$. 
+ \end{proof}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.1.20: Let $S$ be a nonempty finite set with a binary operation $*$ that satisfies the associative law. Show that $S$ is a group if $a*b=a*c$ implies $b=c$ and $a*c=b*c$ implies $a=b$ for all $a, b, c \in S$. What can you say if $S$ is infinite?]
+\problemAnswer{
+\begin{proof}
+Assume $S$ is a nonempty finite set with a binary operation $*$ such that $a*b=a*c$ implies $b=c$ and $a*c=b*c$ implies $a=b$ for all $a, b, c \in S$. For simplification, let's write $a*b = ab$ for the remainder of this proof. We will use proposition 3.1.8 to to show $S$ is a group:
+\\ Consider $\varphi_a: S \rightarrow S$ such that $a \in S$ and $\varphi_a(x)=ax$. First show $\varphi_a$ is a bijection:
+\\Notice $|S|=|S|$ is finite, so by proposition 2.1.8, it suffices to show $\varphi_a$ is one-to-one or onto. We will show $\varphi_a$ is one-to-one. Consider any $b, c \in S$ and suppose $\varphi_a(b)=\varphi_a(c)$. Then, $ab=ac$. By assumption, this implies $b = c$. Thus, $\varphi_a$ is one-to-one. Then, by proposition 2.1.8, $\varphi_a$ is a bijection. \\
+Consider any $b \in S$. Since $\varphi_a$ is a bijection, there exists $x \in S$ such that $\varphi_a(x)=b$. Then, $ax = b$, as desired for part of proposition 3.1.20. \\
+Next, consider $\varphi^{'}_a: S \rightarrow S$ by $\varphi^{'}_a(x)= xa$. Notice $|S|=|S|$ is finite, so by proposition 2.1.8, it suffices to show $\varphi^{'}_a$ is one-to-one or onto. We will show $\varphi^{'}_a$ is one-to-one. Consider any $b, c \in S$ and suppose $\varphi^{'}_a(b)=\varphi^{'}_a(c)$. Then, $ba=ca$. By assumption, this implies $b = c$. Thus, $\varphi_a$ is one-to-one. Then, by proposition 2.1.8, $\varphi^{'}_a$ is a bijection.\\
+Consider any $b \in S$. Since $\varphi^{'}_a$ is a bijection, there exists $x \in S$ such that $\varphi^{'}_a(x)=b$. Then, $xa = b$, as desired for part of proposition 3.1.20. \\
+Thus, $S$ is a nonempty set with an associative binary operation in which the equations $ax=b$ and $xa=b$ have solutions for all $a, b \in G$, so by proposition 3.1.8, $S$ is a group.
+
+\end{proof}
+
+}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.1.22: Let $G$ be a group. Prove that $G$ is abelian if and only if $(ab)^{-1}=a^{-1}b^{-1}$ for all $a, b \in G$.]
+\problemAnswer{
+ \begin{proof}
+ ($\Rightarrow$) Assume $G$ is an abelian group. Then consider any $a, b \in G$. Because $G$ is a group there exists $a^{-1}, b^{-1} \in G$ From proposition 3.1.3 in Beachy, $(ab)^{-1}=b^{-1} a^{-1}$. Since $G$ is abelian,  $b^{-1} a^{-1} = a^{-1}b^{-1}$. Thus, for any $a, b \in G$, $(ab)^{-1}=a^{-1}b^{-1}$
+ \\ 
+ ($\Leftarrow$) Assume for any $a, b \in G$, $(ab)^{-1}=a^{-1}b^{-1}$. For any $a, b \in G$, $a^{-1}, b^{-1} \in G$ so $(ab)^{-1}=a^{-1}b^{-1}$ must be valid for $a^{-1}, b^{-1}$. From proposition 3.1.3, $(ab)^{-1}=b^{-1} a^{-1}$; thus $a^{-1}b^{-1} = b^{-1} a^{-1}$. Substituting $a^{-1}, b^{-1}$, we obtain $(a^{-1})^{-1}(b^{-1})^{-1} = (b^{-1})^{-1} (a^{-1})^{-1}$. From paragraph 1 on page 92 of Beachy, $(a^{-1})^{-1} = a, (b^{-1})^{-1}= b$. Thus, $ab=ba$ for any $a, b \in G$ and therefore $G$ is abelian.
+ \end{proof}
+}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.1.23: Let $G$ be a group. Prove that if $x^2=e$ for all $x \in G$, then $G$ is abelian. ]
+\problemAnswer{
+\begin{proof}
+Assume $x^2=e$ for all $x \in G$. Then, $x^{-1} \in G$ and $x^2 x^{-1}=e x^{-1}$ implies $x = x^{-1}$ for any $x \in G$. Consider any $a, b \in G$. Then, $ab \in G$. Then, since $x=x^{-1}$ for any $x \in G$, $(ab)^{-1}= ab$. From prop	osition 3.1.3, $(ab)^{-1}= b^{-1} a^{-1}$. Thus, $ab=b^{-1} a^{-1}$. Then, since $x = x^{-1}$ for any $x \in G$, $b^{-1}=b$ and $a^{-1}=a$ so $ab=b^{-1} a^{-1}=ba$ for any $a, b \in G$. Thus, $G$ is abelian.
+\end{proof}
+
+}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Exercise 3.1.24: Show that if $G$ is a finite group with an even number of elements, then there must exist an element $a \in G$ with $a \neq e$ such that $a^2 = e$. ]
+\problemAnswer{
+Assume $G$ is a finite group with an even number of elements. Then, $|G|=2k $ for $k\geq 1$. Since $G$ is a group, $G$ must have an identity element, $e \in G$. Thus, there are $2k -1$ elements in $G$ that are not the identity element. Since $G$ is a group, all elements in $G$ have at most one inverse that is also in $G$. Since we have an odd number of elements not equal to $e$ in $G$, by the pigeon hole principle, there must be at least one element in $G$ which is its own inverse. Suppose $a \in G$ is an element that is its own inverse. Then $aa=e$ and so $a^2 = e$. 
+}
+
+\end{homeworkProblem}
+
+\end{spacing}
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------%
+% The following is copyright and licensing information for
+% redistribution of this LaTeX source code; it also includes a liability
+% statement. If this source code is not being redistributed to others,
+% it may be omitted. It has no effect on the function of the above code.
+%----------------------------------------------------------------------%
+% Copyright (c) 2007, 2008, 2009, 2010, 2011 by Theodore P. Pavlic
+%
+% Unless otherwise expressly stated, this work is licensed under the
+% Creative Commons Attribution-Noncommercial 3.0 United States License. To
+% view a copy of this license, visit
+% http://creativecommons.org/licenses/by-nc/3.0/us/ or send a letter to
+% Creative Commons, 171 Second Street, Suite 300, San Francisco,
+% California, 94105, USA.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+% OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+% CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+% TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+% SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+%----------------------------------------------------------------------%
